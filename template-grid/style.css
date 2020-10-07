@@ -73,7 +73,7 @@
 }
 
 .template-grid-cell {
-  outline: 1px dotted rgba(255, 255, 255, 0.2);
+  border: 1px dotted rgba(255, 255, 255, 0.2);
   border-radius: 2px;
   position: relative;
   min-width: 20%;
@@ -89,7 +89,7 @@
   display: none;
 }
 .template-grid-cell.is-selected {
-  outline: 2px solid white;
+  border: 2px solid white;
 }
 .template-grid-cell.is-selected .template-grid-cell-toolbar {
   pointer-events: auto;

@@ -23,11 +23,17 @@
 
 				// Template Grid Tools
 				$( "#direction-column" ).click( function() {
+					$( "#direction-column" ).removeClass( 'active' );
+					$( "#direction-row" ).removeClass( 'active' );
+					$(this).addClass( 'active' );
 					$( ".template-grid" ).removeClass( [ "direction-column", "direction-row" ] );
 					$( ".template-grid" ).addClass( "direction-column" );
 				});
 
 				$( "#direction-row" ).click( function() {
+					$( "#direction-column" ).removeClass( 'active' );
+					$( "#direction-row" ).removeClass( 'active' );
+					$(this).addClass( 'active' );
 					$( ".template-grid" ).removeClass( [ "direction-column", "direction-row" ] );
 					$( ".template-grid" ).addClass( "direction-row" );
 				});
@@ -77,10 +83,16 @@
 						$cell = $input.parent().parent().parent().parent();
 
 					if ( $width == '' ) {
-						$cell.css( 'width', '' );
+						$cell.css( {
+							'width': '',
+							'align-self': '',
+						} );
 						$cell.addClass( 'auto-fill' );
 					} else {
-						$cell.css( 'width', $width );
+						$cell.css( {
+							'width': $width,
+							'align-self': 'center',
+						} );
 						$cell.removeClass( 'auto-fill' );
 					}
 				});
@@ -90,7 +102,7 @@
 	<body>
 		<ul class="block-toolbar template-grid-toolbar">
 			<li><button id="direction-column">Stack</button></li>
-			<li><button id="direction-row">Grid</button></li>
+			<li><button id="direction-row" class="active">Grid</button></li>
 			<li class="divider"></li>
 			<!-- <li><button id="toggle-wrap">Nowrap</button></li> -->
 			<li>
