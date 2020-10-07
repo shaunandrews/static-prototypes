@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Template Grid Prototype</title>
+		<link rel="stylesheet" href="./style.css" type="text/css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script>
+			$(function(){
+				// Clone the prototype Cell
+				$( "#cell-prototype" ).clone( true ).removeAttr('id').appendTo( ".template-grid" );
+
+				// Select Cell
+				$( ".template-grid-cell" ).click( function() {
+					$( ".template-grid-cell" ).removeClass( 'is-selected' );
+					$( this ).addClass( 'is-selected' );
+				} );
+
+				// Unselect all
+				$( "#unselect-all" ).click( function() {
+					$( ".template-grid-cell" ).removeClass( 'is-selected' );
+				} );
+
+				// Template Grid Tools
+				$( "#direction-column" ).click( function() {
+					$( ".template-grid" ).removeClass( [ "direction-column", "direction-row" ] );
+					$( ".template-grid" ).addClass( "direction-column" );
+				});
+
+				$( "#direction-row" ).click( function() {
+					$( ".template-grid" ).removeClass( [ "direction-column", "direction-row" ] );
+					$( ".template-grid" ).addClass( "direction-row" );
+				});
+
+				$( "#add-cell" ).click( function() {
+					$( "#cell-prototype" ).clone( true ).removeAttr('id').appendTo( ".template-grid" );
+				});
+
+				$( "#remove-cell" ).click( function() {
+					$('.template-grid-cell').filter(':last').remove();
+				});
+
+				$( "#toggle-wrap" ).click( function() {
+					$(this).toggleClass( 'active' );
+					$( ".template-grid" ).toggleClass( "unwrap-cells"  );
+				});
+
+				$( ".toolbar-gutter input" ).change( function() {
+					var $input = $( this ),
+						$gutter = $input.val();
+
+					if ( $gutter == '' ) {
+						$( ".template-grid-cell" ).css( 'margin', '' );
+					} else {
+						$( ".template-grid-cell" ).css( 'margin', $gutter );
+					}
+				});
+
+				// Template Grid Cell Tools
+				$( ".toggle-pin" ).click( function() {
+					$(this).toggleClass( 'active' );
+					$(this).parent().parent().parent().toggleClass( 'is-pinned' );
+				});
+
+				$( ".toggle-grow" ).click( function() {
+					$(this).toggleClass( 'active' );
+					$(this).parent().parent().parent().toggleClass( 'auto-fill' );
+				});
+
+				$( ".remove-this-cell" ).click( function() {
+					$(this).parent().parent().parent().remove();
+				});
+
+				$( ".toolbar-width input" ).change( function() {
+					var $input = $( this ),
+						$width = $input.val(),
+						$cell = $input.parent().parent().parent().parent();
+
+					if ( $width == '' ) {
+						$cell.css( 'width', '' );
+						$cell.addClass( 'auto-fill' );
+					} else {
+						$cell.css( 'width', $width );
+						$cell.removeClass( 'auto-fill' );
+					}
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<ul class="block-toolbar template-grid-toolbar">
+			<li><button id="direction-column">Stack</button></li>
+			<li><button id="direction-row">Grid</button></li>
+			<li class="divider"></li>
+			<!-- <li><button id="toggle-wrap">Nowrap</button></li> -->
+			<li>
+				<div class="toolbar-input toolbar-gutter">
+					<label title="Cell Gutter">G</label>
+					<input type="text" />
+				</div>
+			</li>
+			<li class="divider"></li>
+			<li><button id="add-cell">+ Cell</button></li>
+			<li><button id="remove-cell">– Cell</button></li>
+			<li><button id="unselect-all">Unselect</button></li>
+		</ul>
+		<div class="template-grid direction-row">
+			<div id="cell-prototype" class="template-grid-cell auto-fill">
+				<ul class="block-toolbar template-grid-cell-toolbar">
+					<!-- <li><button class="toggle-grow active">Fill</button></li> -->
+					<!-- <li><button class="toggle-pin">Pin</button></li> -->
+					<!-- <li class="divider"></li> -->
+					<li>
+						<div class="toolbar-input toolbar-width">
+							<label title="Cell Width">W</label>
+							<input type="text" />
+						</div>
+					</li>
+					<li class="divider"></li>
+					<li><button class="remove-this-cell">– Cell</button></li>
+				</ul>
+
+				<div class="inline-inserter">+</div>
+			</div>
+		</div>
+	</body>
+</html>

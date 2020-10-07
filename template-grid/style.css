@@ -1,0 +1,126 @@
+.block-toolbar {
+  margin: 0 0 12px 0;
+  padding: 0 4px 0 0;
+  list-style: none;
+  display: inline-flex;
+  border-radius: 2px;
+  border: 1px solid #333;
+  background: #fff;
+  color: #333;
+  font-size: 13px;
+}
+.block-toolbar li {
+  margin: 4px 0 4px 4px;
+  padding: 0;
+}
+.block-toolbar li.divider {
+  margin: 0 0 0 4px;
+  width: 1px;
+  height: 38px;
+  background: #333;
+}
+.block-toolbar button {
+  padding: 6px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+}
+.block-toolbar button:hover {
+  border-color: #333;
+}
+.block-toolbar button.active {
+  background: #888;
+  color: #fff;
+}
+.block-toolbar.template-grid-toolbar {
+  margin-bottom: 80px;
+}
+.block-toolbar.template-grid-cell-toolbar {
+  position: absolute;
+  top: -56px;
+  opacity: 0;
+  pointer-events: none;
+}
+.block-toolbar .toolbar-input {
+  position: relative;
+}
+.block-toolbar .toolbar-input label {
+  position: absolute;
+  top: 2px;
+  left: 8px;
+  font-size: 10px;
+  color: #888;
+}
+.block-toolbar .toolbar-input input {
+  height: 26px;
+  padding: 0 8px 0 22px;
+  width: 36px;
+  text-align: right;
+}
+
+.template-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.template-grid.direction-row {
+  flex-direction: row;
+}
+.template-grid.direction-column {
+  flex-direction: column;
+}
+.template-grid.unwrap-cells {
+  flex-wrap: nowrap;
+}
+
+.template-grid-cell {
+  outline: 1px dotted rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  position: relative;
+  min-width: 20%;
+}
+.template-grid-cell.is-pinned {
+  order: -1;
+  border: 3px solid green;
+}
+.template-grid-cell.auto-fill {
+  flex-grow: 1;
+}
+.template-grid-cell#cell-prototype {
+  display: none;
+}
+.template-grid-cell.is-selected {
+  outline: 2px solid white;
+}
+.template-grid-cell.is-selected .template-grid-cell-toolbar {
+  pointer-events: auto;
+  opacity: 1;
+}
+.template-grid-cell .inline-inserter {
+  margin: 6px auto;
+  padding: 6px 0px;
+  background: #000;
+  width: 32px;
+  text-align: center;
+  border-radius: 2px;
+  line-height: 1;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 18px;
+  background: #333;
+  color: #fff;
+  line-height: 140%;
+  padding: 0;
+  margin: 24px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+}
+
+p {
+  margin: 0;
+}
+
+/*# sourceMappingURL=style.css.map */
