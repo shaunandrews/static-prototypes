@@ -120,7 +120,7 @@ hr {
 }
 .block.is-highlighted {
   border-radius: 2px;
-  border-color: rgba(29, 53, 180, 0.3);
+  border-color: #1D35B4;
   transition-delay: 800ms;
 }
 .block.is-highlighted::after {
