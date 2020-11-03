@@ -9,7 +9,7 @@
 			var placeholderText = 'Start writing or type / to choose a block...';
 
 			function unselectAllBlocks() {
-				console.log( 'unselectAllBlocks()' );
+				//console.log( 'unselectAllBlocks()' );
 				$( ".is-selected" ).removeClass( 'is-selected' );
 				$( '.canvas .add-button' ).remove();
 				$( '.canvas .block-toolbar' ).remove();
@@ -21,15 +21,14 @@
 			}
 
 			function selectBlock( block ) {
-				console.log( 'selectBlock()', block );
+				//console.log( 'selectBlock()', block );
 				unselectAllBlocks();
 				$( block ).addClass( 'is-selected' );
 				event.stopPropagation();
 			}
 
 			function displayAddButton( block ) {
-				console.log( 'displayAddButton()', block );
-
+				//console.log( 'displayAddButton()', block );
 				var prototypeAddButton = $( '#prototype__add-button' ).clone( true ).removeAttr( 'id' );
 
 				// If the block is a container, append the add button
@@ -45,7 +44,7 @@
 			}
 
 			function displayBlockToolbar( block ) {
-				console.log( 'displayBlockToolbar()', block );
+				//console.log( 'displayBlockToolbar()', block );
 				$( '#prototype__block-toolbar' ).clone( true ).removeAttr( 'id' ).appendTo( block );
 			}
 
@@ -61,11 +60,22 @@
 				// Clicking the canvas unselects all blocks
 				$( '.canvas' ).click( unselectAllBlocks );
 
+				// Don't do anything when clicking the + buttons (yet)
+				$( '.add-button' ).click( function( event ) {
+					event.stopPropagation();
+				} );
+
 				// Hovering the add button highlights the container
 				$( '.add-button' ).hover( function() {
-					$( this ).closest( '.block-type__container' ).addClass( 'is-highlighted' );
+					var containerBlock = $( this ).closest( '.block-type__container' );
+
+					$( 'body' ).addClass( 'add-guides-showing' );
+					containerBlock.addClass( [ 'is-highlighted', 'is-focused' ] );
 				}, function() {
-					$( this ).closest( '.block-type__container' ).removeClass( 'is-highlighted' );
+					var containerBlock = $( this ).closest( '.block-type__container' );
+
+					$( 'body' ).removeClass( 'add-guides-showing' );
+					containerBlock.removeClass( [ 'is-highlighted', 'is-focused' ] );
 				} );
 
 
@@ -101,37 +111,61 @@
 					<svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 11v2m0-8v2m0 10v2" stroke="#1E1E1E" stroke-width="2"/></svg>
 				</div>
 			</div>
+
+			<hr id="prototype__insert-guide" class="insert-guide" />
 		</div>
+
 		<div class="canvas">
 			<div class="block block__columns block-type__container width__full">
 				<div class="block block__column block-type__container text__centered" style="background: url('./painting.jpg') 50%; background-size: 600px;">
-					<h2 contenteditable="true" class="block block__heading block-type__text" style="color: #F8FFDA; font-size: 58px; text-shadow: 0 2px 8px rgba( 0, 0, 0, 0.5 );">Don Quixote</h2>
+					<h2 contenteditable="true" class="block block__heading block-type__text last-child" style="color: #F8FFDA; font-size: 58px; text-shadow: 0 2px 8px rgba( 0, 0, 0, 0.5 );">Don Quixote</h2>
 				</div>
 				<div class="block block__column block-type__container" style="background-color: #F8FFDA;">
 					<h3 contenteditable="true" class="block block__heading block-type__text">Treats of the first</h3>
 					<p contenteditable="true" class="block block__paragraph block-type__text">These preliminaries settled, he did not care to put off any longer the execution.</p>
 
-					<nav class="block block__navigation block-type__container">
+					<nav class="block block__navigation block-type__container horizontal last-child">
 						<a contenteditable="true" class="block block__navigation-item block-type__text" href="#">Home</a>
 						<a contenteditable="true" class="block block__navigation-item block-type__text" href="#">About</a>
 						<a contenteditable="true" class="block block__navigation-item block-type__text" href="#">Writing</a>
-						<a contenteditable="true" class="block block__navigation-item block-type__text" href="#">Contact</a>
+						<a contenteditable="true" class="block block__navigation-item block-type__text last-child" href="#">Contact</a>
 					</nav>
 				</div>
 			</div>
+
 			<p contenteditable="true" class="block block__paragraph block-type__text">Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Laboris nisi ut aliquip ex ea commodo consequat. Totam rem aperiam. Et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque. Fugiat quo voluptas nulla pariatur?</p>
 			<p contenteditable="true" class="block block__paragraph block-type__text">Nihil molestiae consequatur, vel illum qui dolorem eum. Inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Et harum quidem rerum facilis est et expedita distinctio. Architecto beatae vitae dicta sunt explicabo.</p>
 			<p contenteditable="true" class="block block__paragraph block-type__text empty-block has-placeholder"></p>
+
 			<div class="block block__columns block-type__container">
 				<div class="block block__column block-type__container">
-					<p contenteditable="true" class="block block__paragraph block-type__text">Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
+					<div class="block block__image block-type__media">
+						<img src="./painting.jpg" width="100%" style="filter: hue-rotate(-15deg);" />
+					</div>
+					<p contenteditable="true" class="block block__paragraph block-type__text last-child">Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
 				</div>
 				<div class="block block__column block-type__container">
-					<p contenteditable="true" class="block block__paragraph block-type__text">Cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia.</p>
+					<div class="block block__image block-type__media">
+						<img src="./painting.jpg" width="100%" style="filter: hue-rotate(90deg);" />
+					</div>
+					<p contenteditable="true" class="block block__paragraph block-type__text last-child">Cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia.</p>
 				</div>
 				<div class="block block__column block-type__container">
-					<p contenteditable="true" class="block block__paragraph block-type__text">Et harum quidem rerum facilis est et expedita distinctio.</p>
+					<div class="block block__image block-type__media">
+						<img src="./painting.jpg" width="100%" style="filter: hue-rotate(180deg);" />
+					</div>
+					<p contenteditable="true" class="block block__paragraph block-type__text last-child">Et harum quidem rerum facilis est et expedita distinctio.</p>
 				</div>
+			</div>
+
+			<div class="block block__group block-type__container width__full" style="background-color: #F8FFDA;">
+				<p contenteditable="true" class="block block__paragraph block-type__text">Fugiat quo voluptas nulla pariatur? Nihil molestiae consequatur, vel illum qui dolorem eum. Inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Et harum quidem rerum facilis est et expedita distinctio. Architecto beatae vitae dicta sunt explicabo.</p>
+				<nav class="block block__navigation block-type__container horizontal last-child">
+					<a contenteditable="true" class="block block__navigation-item block-type__text" href="#">Home</a>
+					<a contenteditable="true" class="block block__navigation-item block-type__text" href="#">About</a>
+					<a contenteditable="true" class="block block__navigation-item block-type__text" href="#">Writing</a>
+					<a contenteditable="true" class="block block__navigation-item block-type__text last-child" href="#">Contact</a>
+				</nav>
 			</div>
 		</div>
 

@@ -34,6 +34,9 @@ hr {
 .canvas h2 {
   line-height: 150%;
 }
+.canvas p {
+  margin: 0 0 12px 0;
+}
 .canvas .text__centered {
   text-align: center;
 }
@@ -66,6 +69,60 @@ hr {
   width: 12px;
 }
 
+.last-child::after {
+  content: "";
+  height: 3px;
+  border-radius: 1.5px;
+  background: #3858E9;
+  position: absolute;
+  right: 50%;
+  bottom: -3px;
+  left: 50%;
+  opacity: 0;
+  animation: pulse 0.8s infinite;
+  transition: all 0.2s ease-in-out;
+}
+
+.horizontal .last-child::after {
+  top: 50%;
+  right: -3px;
+  bottom: 50%;
+  left: auto;
+  width: 3px;
+  height: auto;
+}
+
+body.add-guides-showing .block.is-selected:not(.is-highlighted) {
+  box-shadow: none;
+}
+body.add-guides-showing .block-toolbar {
+  opacity: 0;
+}
+body.add-guides-showing .is-highlighted > .last-child::after {
+  opacity: 1;
+  left: -3px;
+  right: -3px;
+}
+body.add-guides-showing .horizontal .last-child::after {
+  top: -3px;
+  bottom: -3px;
+  left: auto;
+}
+body.add-guides-showing .is-focused {
+  outline: 10000px solid rgba(255, 255, 255, 0.6);
+}
+
+@keyframes pulse {
+  0% {
+    background: #3858e9;
+  }
+  50% {
+    background: #1d35b4;
+  }
+  100% {
+    background: #3858e9;
+  }
+}
 .block-toolbar {
   background: #fff;
   border: 1px solid #333;
@@ -96,54 +153,32 @@ hr {
 }
 
 .block {
-  border: 2px solid transparent;
   position: relative;
   transition: all 0.2s ease-in-out;
-}
-.block::after {
-  content: "";
-  height: 3px;
-  position: absolute;
-  right: 6px;
-  bottom: 6px;
-  left: 6px;
-  border-radius: 6px;
-  transition: all 0.2s ease-in-out;
-  pointer-events: none;
-  border: 1.5px solid #fff;
-  opacity: 0;
+  outline: 10000px solid rgba(255, 255, 255, 0);
+  outline-offset: 2px;
 }
 .block.is-selected:not(.block-type__text) {
-  border-radius: 2px;
-  border-color: #3858E9;
-  border-style: solid;
+  border-radius: 1px;
+  box-shadow: 0 0 0 2px #3858E9;
+  z-index: 1;
 }
 .block.is-highlighted {
-  border-radius: 2px;
-  border-color: #1D35B4;
-  transition-delay: 800ms;
-}
-.block.is-highlighted::after {
-  opacity: 1;
-  background: #1D35B4;
-  transition-delay: 800ms;
-  animation: highlightBlock 1.2s infinite;
-  animation-delay: 1s;
+  border-radius: 1px;
+  box-shadow: 0 0 0 1px #333;
+  z-index: 1;
 }
 
-@keyframes highlightBlock {
-  0% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.3;
-  }
-  100% {
-    opacity: 1;
-  }
-}
 .block__paragraph.has-placeholder {
   color: #c4c4c4;
+}
+
+.block__image img {
+  display: block;
+}
+
+.block__group {
+  padding: 6px;
 }
 
 .block__columns {
@@ -159,14 +194,6 @@ hr {
 
 .block__navigation {
   display: flex;
-}
-.block__navigation::after {
-  top: 6px;
-  right: 6px;
-  bottom: 6px;
-  left: auto;
-  height: auto;
-  width: 3px;
 }
 
 .block__navigation-item {
