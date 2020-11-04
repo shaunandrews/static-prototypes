@@ -1,0 +1,300 @@
+body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+	font-size: 18px;
+	background: #c4c4c4;
+	color: #333;
+	line-height: 140%;
+	padding: 0;
+	margin: 0;
+}
+
+* {
+	box-sizing: border-box;
+	outline: none;
+}
+
+hr {
+	margin: 60px 0;
+	padding: 0;
+}
+
+
+.prototype-elements {
+	display: none;
+	position: relative;
+	margin: 80px;
+	padding: 40px;
+}
+
+.top-toolbar {
+	background: white;
+	height: 48px;
+	display: flex;
+	position: fixed;
+	top: 0;
+	right: 0;
+	left: 0;
+	z-index: 10000;
+	border-bottom: 1px solid #c4c4c4;
+
+	.toolbar-primary-add {
+		background: #3858E9;
+		padding: 3px 10px;
+		display: inline-block;
+		max-height: 32px;
+		border-radius: 2px;
+		margin: 8px;
+
+		svg {}
+	}
+}
+
+.canvas {
+	background: #fff;
+	margin-top: 48px;
+	box-shadow: 0 2px 6px rgba( 0, 0, 0, 0.2 );
+	padding: 56px 220px;
+
+	h2 {
+		line-height: 150%;
+	}
+
+	h3 {
+
+	}
+
+	p {
+		margin: 0 0 12px 0;
+	}
+
+	.text__centered {
+		text-align: center;
+	}
+
+	.width__full {
+		margin-left: -180px;
+		margin-right: -180px;
+	}
+
+}
+
+// Add Button
+.add-button {
+	padding: 6px;
+	margin: 0;
+	border-radius: 4px;
+	border: 2px solid #fff;
+	font-size: 22px;
+	background: #333;
+	color: #fff;
+	position: absolute;
+	bottom: -38px;
+	right: -4px;
+	z-index: 10000;
+	outline: none;
+	cursor: pointer;
+
+	&:hover {
+		background: #1D35B4;
+	}
+
+	svg {
+		display: block;
+		height: 12px;
+		width: 12px;
+	}
+}
+
+// Container Insert Guide
+.last-child::after {
+	content: '';
+	height: 6px;
+	border-radius: 12px;
+	background: #3858E9;
+	border: 1px solid white;
+	position: absolute;
+	right: 50%;
+	bottom: -3px;
+	left: 50%;
+	opacity: 0;
+	animation: pulse 0.8s infinite;
+	transition: all 0.2s ease-in-out;
+}
+
+.horizontal .last-child::after {
+	top: 50%;
+	right: -3px;
+	bottom: 50%;
+	left: auto;
+	width: 6px;
+	height: auto;
+}
+
+// Primary Add Guide
+.primary-add-guide {
+	height: 6px;
+	border-radius: 12px;
+	background: #3858E9;
+	border: 1px solid white;
+	animation: pulse 0.8s infinite;
+	margin: 12px 0 6px 0;
+	padding: 0;
+}
+
+body.add-guides-showing {
+	caret-color: transparent;
+
+	.block.is-selected:not( .is-highlighted ) {
+		box-shadow: none;
+	}
+
+	.block-toolbar {
+		opacity: 0;
+	}
+
+	.is-highlighted > .last-child::after {
+		opacity: 1;
+		left: -3px;
+		right: -3px;
+	}
+
+	.horizontal .last-child::after {
+		top: -3px;
+		bottom: -3px;
+		left: auto;
+	}
+
+	.is-focused {
+		outline: 10000px solid rgba( white, 0.6 );
+	}
+}
+
+@keyframes pulse {
+	0% { background: rgba( #3858E9, 1 ); }
+	50% { background: rgba( #1D35B4, 1 ); }
+	100% { background: rgba( #3858E9, 1 ); }
+}
+
+// Toolbar
+.block-toolbar {
+	background: #fff;
+	border: 1px solid #333;
+	border-radius: 2px;
+	position: absolute;
+	top: -60px;
+	left: -2px;
+	display: flex;
+
+	.toolbar-icon {
+		padding: 8px;
+		margin: 3px;
+	}
+
+	.toolbar-drag {
+		padding: 8px 0;
+		margin: 3px 0;
+	}
+
+	.toolbar-divider {
+		height: 46px;
+		width: 1px;
+		margin: 0;
+		background: #333;
+	}
+
+	svg {
+		display: block;
+		height: 24px;
+		width: 24px;
+	}
+}
+
+.more-menu {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	background: white;
+	border: 1px solid #333;
+	border-radius: 2px;
+	font-size: 14px;
+	box-shadow: 0 2px 6px rgba( #333, 0.4 );
+	position: absolute;
+	top: -7px;
+	left: 114px;
+	z-index: 2000;
+
+	li {
+		margin: 0;
+		padding: 0;
+		min-width: 180px;
+
+		&:not( .more-menu__divider ) {
+			padding: 6px 12px;
+			margin: 6px;
+		}
+
+		hr {
+			margin: 0;
+			padding: 0;
+			height: 1px;
+			border: none;
+			background: #333;
+		}
+	}
+}
+
+// Blocks
+.block {
+	position: relative;
+	transition: all 0.2s ease-in-out;
+	outline: 10000px solid rgba( white, 0 );
+	outline-offset: 2px;
+
+	&.is-selected:not( .block-type__text ) {
+		border-radius: 1px;
+		box-shadow: 0 0 0 2px #3858E9;
+		z-index: 1;
+	}
+
+	&.is-highlighted {
+		border-radius: 2px;
+		box-shadow: 0 0 0 1px rgba( #333, 0.3 );
+		z-index: 1;
+	}
+}
+
+.block__paragraph {
+	&.has-placeholder {
+		color: #c4c4c4;
+	}
+}
+
+.block__image {
+	img {
+		display: block;
+	}
+}
+
+.block__group {
+	padding: 6px;
+}
+
+.block__columns {
+	display: flex;
+	padding: 6px;
+}
+
+.block__column {
+	max-width: 50%;
+	flex-grow: 1;
+	padding: 12px;
+}
+
+.block__navigation {
+	display: flex;
+}
+
+.block__navigation-item {
+	padding: 6px;
+	margin: 6px;
+}
