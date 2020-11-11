@@ -67,6 +67,18 @@ body {
   z-index: 200000;
   transition: all 0.15s ease-in-out;
 }
+.inbetween-add-button::after {
+  display: block;
+  background: #efefef;
+  height: 3px;
+  width: 100%;
+  position: absolute;
+  top: 6px;
+  opacity: 0;
+}
+.inbetween-add-button:hover::after {
+  opacity: 1;
+}
 .inbetween-add-button::before {
   content: "";
   display: block;
@@ -83,7 +95,7 @@ body {
   opacity: 0;
   position: relative;
   top: 6px;
-  width: 92%;
+  width: 90%;
   margin: 0 auto;
   outline: 1px solid white;
   transition: all 0.1s ease-in-out;
@@ -95,10 +107,13 @@ body {
   bottom: auto !important;
   left: calc( 50% - 14px );
   opacity: 0;
-  transition: all 0.1s ease-in-out;
+  transition: all 0.15s ease-in-out;
 }
 .inbetween-add-button.is-showing-guide {
   cursor: pointer;
+}
+.inbetween-add-button.is-showing-guide::after {
+  opacity: 0;
 }
 .inbetween-add-button.is-showing-guide .add-guide {
   opacity: 1;
@@ -160,7 +175,8 @@ body {
 }
 
 .block.block__image {
-  padding: 0 0 6px 0;
+  padding: 0;
+  margin-bottom: 12px;
 }
 .block.block__image img {
   display: block;

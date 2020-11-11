@@ -79,6 +79,23 @@ body {
 	z-index: 200000;
 	transition: all 0.15s ease-in-out;
 
+	&::after {
+		//content: '';
+		display: block;
+		background: #efefef;
+		height: 3px;
+		width: 100%;
+		position: absolute;
+		top: 6px;
+		opacity: 0;
+	}
+
+	&:hover {
+		&::after {
+			opacity: 1;
+		}
+	}
+
 	&::before {
 		content: '';
 		display: block;
@@ -96,7 +113,7 @@ body {
 		opacity: 0;
 		position: relative;
 		top: 6px;
-		width: 92%;
+		width: 90%;
 		margin: 0 auto;
 		outline: 1px solid white;
 		transition: all 0.1s ease-in-out;
@@ -109,12 +126,16 @@ body {
 		bottom: auto !important;
 		left: calc( 50% - 14px );
 		opacity: 0;
-		transition: all 0.1s ease-in-out;
+		transition: all 0.15s ease-in-out;
 	}
 
 	&.is-showing-guide {
 		//height: 15px;
 		cursor: pointer;
+
+		&::after {
+			opacity: 0;
+		}
 
 		.add-guide {
 			opacity: 1;
@@ -186,7 +207,8 @@ body {
 }
 
 .block.block__image {
-	padding: 0 0 6px 0;
+	padding: 0;
+	margin-bottom: 12px;
 
 	img {
 		display: block;
