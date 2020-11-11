@@ -51,7 +51,22 @@
 				// Place an inbetween add button after every block.
 				$( '.block:not( .block__column )' ).after( $( '#prototype__inbetween-add-button' ).clone( true ).removeAttr( 'id' ) );
 				$( '.canvas' ).prepend( $( '#prototype__inbetween-add-button' ).clone( true ).removeAttr( 'id' ) );
-				$( '.block-type__container' ).prepend( $( '#prototype__inbetween-add-button' ).clone( true ).removeAttr( 'id' ) );
+				$( '.block-type__container:not( .block__columns )' ).prepend( $( '#prototype__inbetween-add-button' ).clone( true ).removeAttr( 'id' ) );
+
+				var addButtonDelay;
+				// When hovering a inbetween add button toggle a body class
+				$( '.inbetween-add-button' ).hover(
+					function() {
+						var addButton = $( this );
+						addButtonDelay = window.setTimeout( function() {
+							console.log( 'test' );
+							addButton.addClass( 'is-showing-guide' );
+						} , 400 );
+
+					}, function() {
+						window.clearTimeout( addButtonDelay );
+						$( this ).removeClass( 'is-showing-guide' );
+				} );
 			});
 		</script>
 	</head>

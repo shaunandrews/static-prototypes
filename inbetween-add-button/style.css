@@ -62,43 +62,49 @@ body {
 
 .inbetween-add-button {
   position: relative;
-  top: -10px;
+  top: -13px;
   height: 0px;
-  cursor: pointer;
+  z-index: 200000;
+  transition: all 0.15s ease-in-out;
 }
 .inbetween-add-button::before {
   content: "";
   display: block;
-  height: 10px;
+  height: 15px;
   width: 100%;
   position: absolute;
-  top: -2px;
+  top: 0;
   left: 0;
 }
 .inbetween-add-button .add-guide {
-  height: 5px;
+  height: 3px;
   border: none;
   background: #3858E9;
   opacity: 0;
-  width: 30%;
+  position: relative;
+  top: 6px;
+  width: 92%;
+  margin: 0 auto;
   outline: 1px solid white;
-  transition: all 0.15s ease-in-out;
-  transition-delay: 0.1s;
+  transition: all 0.1s ease-in-out;
 }
 .inbetween-add-button .add-button {
   position: absolute;
-  top: -13px;
+  top: -7px;
   right: auto !important;
   bottom: auto !important;
   left: calc( 50% - 14px );
   opacity: 0;
-  transition: opacity 0.15s ease-in-out;
+  transition: all 0.1s ease-in-out;
 }
-.inbetween-add-button:hover .add-guide {
+.inbetween-add-button.is-showing-guide {
+  cursor: pointer;
+}
+.inbetween-add-button.is-showing-guide .add-guide {
   opacity: 1;
   width: 100%;
 }
-.inbetween-add-button:hover .add-button {
+.inbetween-add-button.is-showing-guide .add-button {
   opacity: 1;
 }
 
@@ -154,7 +160,7 @@ body {
 }
 
 .block.block__image {
-  padding: 0;
+  padding: 0 0 6px 0;
 }
 .block.block__image img {
   display: block;
