@@ -195,6 +195,13 @@ body {
 		box-shadow: 0 0 0 2px #3858E9;
 		z-index: 1;
 	}
+
+	&.is-highlighted {
+		outline: 10000px solid rgba( white, 0.6 );
+		//border-radius: 2px;
+		//box-shadow: 0 0 0 1px rgba( #333, 0.3 );
+		z-index: 1;
+	}
 }
 
 .block.block__paragraph,

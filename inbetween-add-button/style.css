@@ -164,6 +164,10 @@ body {
   box-shadow: 0 0 0 2px #3858E9;
   z-index: 1;
 }
+.block.is-highlighted {
+  outline: 10000px solid rgba(255, 255, 255, 0.6);
+  z-index: 1;
+}
 
 .block.block__paragraph,
 .block.block__heading {
