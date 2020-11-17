@@ -1,0 +1,329 @@
+.sidebar {
+  position: fixed;
+  top: 47px;
+  right: 0;
+  bottom: 0;
+  width: 280px;
+
+  font-size: 15px;
+
+  background: white;
+  border-left: 1px solid #ccc;
+
+  overflow: auto;
+  transform: translateX( 280px );
+  transition: all 0.15s ease-in-out;
+
+  h1, h2, h3, h4, h5, h6, p, ul, ol, li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  body.has-sidebar & {
+    transform: translateX( 0 );
+  }
+}
+
+.sidebar-header {
+  display: flex;
+  padding: 12px 6px 0 18px;
+
+  h3 {
+    flex-grow: 1;
+    font-size: 13px;
+    font-weight: normal;
+  }
+
+  .sidebar-close {
+    border: none;
+    background: none;
+    cursor: pointer;
+  }
+}
+
+.sidebar-tabs {
+  display: flex;
+  border-bottom: 1px solid #ccc;
+
+  li {
+    padding: 6px 18px;
+    cursor: pointer;
+
+    &:hover {
+      color: blue;
+    }
+
+    &.is-current {
+      color: blue;
+      font-weight: bold;
+      border-bottom: 3px solid blue;
+    }
+  }
+}
+
+li.sidebar-accordion {
+  border-bottom: 1px solid #ccc;
+
+  h4.sidebar-accordion__label {
+    padding: 12px 18px;
+    font-size: 13px;
+    font-weight: 500;
+
+    /*
+    &:hover {
+      color: blue;
+      background: #efefef;
+      cursor: pointer;
+    }
+    */
+  }
+
+  .sidebar-accordion__contents {
+    padding: 0 12px 12px 12px;
+  }
+}
+
+.customized {
+  position: relative;
+  top: 9px;
+  left: 2px;
+  display: inline-block;
+  text-indent: -5000px;
+  height: 8px;
+  width: 8px;
+  background: blue;
+  border-radius: 50%;
+}
+
+.color {
+  position: relative;
+
+  .current-color {
+    padding: 6px;
+    display: flex;
+    cursor: pointer;
+    border-radius: 2px;
+
+    &:hover {
+      background: #efefef;
+      color: blue;
+    }
+  }
+
+  .color__swatch {
+    height: 24px;
+    width: 24px;
+    margin-right: 12px;
+    border-radius: 50%;
+    border: 1px solid rgba( black, 0.4 );
+    background: white;
+  }
+
+  .color__name {
+    flex-grow: 1;
+    line-height: 24px;
+    cursor: pointer;
+  }
+}
+
+.color-picker {
+  border-radius: 2px;
+  opacity: 0;
+  background: white;
+  box-shadow: 0 2px 12px rgba( black, 0.6 );
+              //0 0 0 2000px rgba( black, 0.6 );
+  position: absolute;
+  top: 38px;
+  right: -6px;
+  left: -6px;
+  z-index: 1;
+  transform: translateY( 12px );
+  transition: all 0.15s ease-in-out;
+
+  .has-color-picker & {
+    opacity: 1;
+    transform: translateY( 0 );
+  }
+
+  .color-picker__description {
+    font-size: 13px;
+    line-height: 140%;
+    //padding: 12px 12px 0 12px;
+    margin: 12px 12px 6px 12px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #efefef;
+    color: #555;
+  }
+
+  .color-picker__simple {
+    padding: 6px 12px;
+
+    h5 {
+      font-size: 15px;
+      font-weight: 400;
+      margin-bottom: 9px;
+    }
+
+    .color-picker__swatches {
+      margin-bottom: 18px;
+
+      &:last-child {
+        margin-bottom: 6px;
+      }
+    }
+  }
+
+  .color-picker__advanced {
+    display: none;
+  }
+
+
+  .color-picker__swatches {
+    display: flex;
+
+    .color__swatch {
+      height: 32px;
+      width: 32px;
+      margin-right: 12px;
+      border-radius: 50%;
+      border: 1px solid rgba( black, 0.4 );
+      cursor: pointer;
+      background: white;
+      transition: all 0.15s ease-in-out;
+
+      &:hover {
+        box-shadow: 0 0 0 3px rgba( black, 0.2 );
+      }
+
+      &.is-current {
+        border-color: white;
+        box-shadow: 0 0 0 3px blue;
+      }
+
+      &.add-new {
+        border-style: dashed;
+        svg {
+          display: block;
+          margin: 9px auto 0 auto;
+        }
+      }
+    }
+  }
+
+  .color-picker__type {
+    min-width: 100px;
+    display: block;
+
+    margin: 6px;
+  }
+
+  .color-picker__rainbow {
+    height: 24px;
+    width: 100%;
+    margin: 0 0 6px 0;
+    position: relative;
+    border-radius: 2px 2px 0  0;
+    background: linear-gradient( to right, red 0%, #ff0 17%, lime 33%, cyan 50%, blue 66%, #f0f 83%, red 100% );
+
+    .color-picker__rainbow-selector {
+      width: 14px;
+      border-radius: 8px;
+      border: 1px solid rgba( black, 0.25 );
+      box-shadow: 0 2px 3px rgba( black, 0.2 ),
+                  0px 0px 0 3px white inset,
+                  0px 0px 0 4px rgba( black, 0.5 ) inset;
+      position: absolute;
+      top: -4px;
+      left: 30px;
+      bottom: -4px;
+      z-index: 10000;
+    }
+  }
+
+  .color-picker__hue {
+    height: 120px;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+
+    .color-picker__hue-color {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+    }
+
+    .color-picker__hue-dark {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background: linear-gradient(to bottom, transparent 0%, #000 100%);
+    }
+
+    .color-picker__hue-light {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background: linear-gradient(to right, #fff 0%, rgba(255,255,255,0) 100%);
+    }
+
+    .color-picker__hue-selector {
+      height: 28px;
+      width: 28px;
+      border-radius: 50%;
+      border: 1px solid rgba( black, 0.25 );
+      box-shadow: 0 2px 3px rgba( black, 0.2 ),
+                  0px 0px 0 3px white inset,
+                  0px 0px 0 4px rgba( black, 0.5 ) inset;
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+  }
+
+  .color-picker__alpha {
+    height: 24px;
+    width: 100%;
+    position: relative;
+    background: linear-gradient(to left, black 0%, rgba( black, 0 ) 100%);
+
+    .color-picker__alpha-selector {
+      width: 14px;
+      border-radius: 8px;
+      border: 1px solid rgba( black, 0.25 );
+      box-shadow: 0 2px 3px rgba( black, 0.2 ),
+                  0px 0px 0 3px white inset,
+                  0px 0px 0 4px rgba( black, 0.5 ) inset;
+      position: absolute;
+      top: -4px;
+      left: 95%;
+      bottom: -4px;
+      z-index: 10000;
+    }
+  }
+
+  .color-current-details {
+    display: none;
+    padding: 12px;
+    border-top: 1px solid #ccc;
+
+    p {
+      margin-bottom: 6px;
+      font-size: 13px;
+    }
+
+    button {
+      display: block;
+    }
+
+    .is-customized & {
+      display: block;
+    }
+  }
+}
