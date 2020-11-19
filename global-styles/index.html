@@ -13,11 +13,13 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 		<script src="../shared-scripts/blocks.js"></script>
 		<script>
-			$(function(){
+			$( function() {
+				// Click the top toolbar button to toggle the appearance sidebar
 				$( '.sidebar-toggle' ).click( function() {
 					$( 'body' ).toggleClass( 'has-sidebar' );
 				} );
 
+				// Click on a color to open the color picker
 				$( '.current-color' ).click( function() {
 					var currentColor = $( this ),
 							color = $( this ).parent();
@@ -71,7 +73,81 @@
 						}, 0 );
 					}
 				} );
-			});
+
+				// Click on a setting to open it's picker
+				$( '.setting__current' ).click( function() {
+					var currentSetting = $( this ),
+							setting = currentSetting.parent(),
+							settingType = setting.data( 'settingType' ),
+							settingValue = setting.data( 'settingValue' ),
+							settingLabel = setting.data( 'settingLabel' ),
+							settingIsCustom = setting.data( 'settingIsCustom' ),
+							settingDescription = setting.data( 'settingDescription' );
+
+					// If the picker is already displayed, hide it...
+					if ( setting.hasClass( 'has-picker' ) ) {
+						// Remove the class from the container
+						setting.removeClass( 'has-picker' );
+
+						// Remove any pickers that might already exist
+						// The timer is to allow the transition to finish first.
+						window.setTimeout( function() {
+							setting.find( '.setting-picker' ).remove();
+						}, 150 );
+
+					// If the picker isn't displayed, show it...
+					} else {
+						// Grab the prototype
+						settingPicker = $( '#prototype__setting-picker' ).clone( true ).removeAttr( 'id' );
+						settingPicker.find( '.setting-picker__description' ).html( settingDescription );
+
+						if ( settingType == 'font' ) {
+							settingPicker.find( '.color-picker' ).remove();
+						}
+
+						if ( settingType == 'color' ) {
+							settingPicker.find( '.font-picker' ).remove();
+							settingPicker.find( "[data-color-value='" + settingValue + "']" ).addClass( 'is-current' );
+
+							if ( !settingIsCustom ) {
+								settingPicker.find( '.setting-picker__revert' ).remove();
+							}
+						}
+
+						// Append the picker into the container
+						settingPicker.appendTo( setting );
+
+						// Add the container class after a split second to allow
+						// the transition to take place.
+						window.setTimeout( function() {
+							setting.addClass( 'has-picker' );
+						}, 0 );
+					}
+				} );
+
+				// Click on sidebar tabs to swap content
+				$( '.sidebar-tabs li' ).click( function() {
+					var tab = $( this ),
+							tabName = tab.data( 'tab' ),
+							tabContent = $( '.tab-' + tabName );
+
+					$( '.sidebar-tabs .is-current' ).removeClass( 'is-current' );
+					tab.addClass( 'is-current' );
+
+					$( '.sidebar-tab-content.is-current' ).removeClass( 'is-current' );
+					tabContent.addClass( 'is-current' );
+
+					console.log( tabName );
+				} );
+
+				// Toggle accordions open and close
+				$( '.sidebar-accordion__label' ).click( function() {
+					var accordion = $( this ).closest( '.sidebar-accordion' );
+
+					accordion.toggleClass( 'is-open' );
+					console.log( accordion );
+				} );
+			} );
 		</script>
 	</head>
 	<body class="has-sidebar sidebar__global-styles">
@@ -203,172 +279,228 @@
 			</div>
 
 			<ol class="sidebar-tabs">
-				<li class="is-current">Site</li>
-				<li>Blocks</li>
+				<li data-tab="site" class="is-current">Site</li>
+				<li data-tab="blocks">Blocks</li>
 			</ol>
 
-			<div class="sidebar-tab-content tab-site">
+			<div class="sidebar-tab-content tab-site is-current">
 				<ul>
-					<li class="sidebar-accordion">
+					<li class="sidebar-accordion is-open">
 						<h4 class="sidebar-accordion__label">Colors</h4>
 
 						<div class="sidebar-accordion__contents">
-							<div class="color background"
-										data-color-value="white"
-										data-color-label="Background"
-										data-color-description="The overall background color of your site.">
-								<div class="current-color">
-									<div class="color__swatch" style="background: white;"></div>
-									<label class="color__name">Background</label>
+							<div class="setting color-background"
+										data-setting-type="color"
+										data-setting-value="white"
+										data-setting-label="Background"
+										data-setting-description="The background of all your site's pages.">
+								<div class="setting__current">
+									<div class="setting__swatch swatch-color" style="background: white;"></div>
+									<label class="setting__name">Background</label>
+									<small class="setting__value">White</small>
 								</div>
 							</div>
 
-							<div class="color text"
-										data-color-value="#333"
-										data-color-label="Text"
-										data-color-description="The default color of text on your site.">
-								<div class="current-color">
-									<div class="color__swatch" style="background: #333;"></div>
-									<label class="color__name">Text</label>
+							<div class="setting color-text"
+										data-setting-type="color"
+										data-setting-value="#333"
+										data-setting-label="Text"
+										data-setting-description="The default text color.">
+								<div class="setting__current">
+									<div class="setting__swatch swatch-color" style="background: #333;"></div>
+									<label class="setting__name">Text</label>
+									<small class="setting__value">Dark gray</small>
 								</div>
 							</div>
 
-							<div class="color links"
-										data-color-value="purple"
-										data-color-label="Link resting"
-										data-color-description="The color of links without interacting with them."
-										data-color-customized="true">
-								<div class="current-color">
-									<div class="color__swatch" style="background: purple;"></div>
-									<label class="color__name">Link resting <span class="customized">Customized</span></label>
+							<div class="setting color-link-resting"
+										data-setting-type="color"
+										data-setting-value="purple"
+										data-setting-label="Link resting"
+										data-setting-description="The color of links without interacting with them.">
+								<div class="setting__current">
+									<div class="setting__swatch swatch-color" style="background: purple;"></div>
+									<label class="setting__name">Link resting</label>
+									<small class="setting__value">Purple</small>
 								</div>
 							</div>
 
-							<div class="color links"
-										data-color-value="green"
-										data-color-label="Link hover"
-										data-color-description="Moving your cursor over a link will change its color.">
-								<div class="current-color">
-									<div class="color__swatch" style="background: green;"></div>
-									<label class="color__name">Link hover</label>
+							<div class="setting color-link-hover"
+										data-setting-type="color"
+										data-setting-is-custom="true"
+										data-setting-value="orange"
+										data-setting-label="Link hover"
+										data-setting-description="Moving your pointer over a link will change its color.">
+								<div class="setting__current">
+									<div class="setting__swatch swatch-color" style="background: orange;"></div>
+									<label class="setting__name">Link hover</label>
+									<small class="setting__value">Orange</small>
+								</div>
+							</div>
+
+							<div class="setting color-accent"
+										data-setting-type="color"
+										data-setting-value="green"
+										data-setting-label="Accent"
+										data-setting-description="Used throughout your site to highlight elements.">
+								<div class="setting__current">
+									<div class="setting__swatch swatch-color" style="background: green;"></div>
+									<label class="setting__name">Accent</label>
+									<small class="setting__value">Green</small>
 								</div>
 							</div>
 						</div>
 					</li>
-					<li class="sidebar-accordion">
+
+					<li class="sidebar-accordion accordion-typography is-open">
 						<h4 class="sidebar-accordion__label">Typography</h4>
 
 						<div class="sidebar-accordion__contents">
-							<fieldset>
-								<label>Font family</label>
-								<select class="" name="">
-									<optgroup label="Theme">
-										<option value="">Whimsical</option>
-										<option value="">Professional</option>
-										<option value="">System</option>
-									</optgroup>
-								</select>
-							</fieldset>
-							<fieldset>
-								<label>Font size</label>
-								<select>
-									<optgroup label="Theme">
-										<option>Tiny</option>
-										<option>Small</option>
-										<option selected>Default</option>
-										<option>Large</option>
-										<option>Huge</option>
-									</optgroup>
-									<optgroup label="Other">
-										<option>Custom</option>
-									</optgroup>
-								</select>
+							<div class="setting font-family"
+										data-setting-type="font"
+										data-setting-value="Whimsical"
+										data-setting-label="Font family"
+										data-setting-description="The fonts used on your site's headings and body text.">
+								<div class="setting__current">
+									<div class="setting__swatch swatch-font">
+										<div class="swatch-font__line-one" style="font-family: Rockwell;">A</div>
+										<div class="swatch-font__line-two" style="font-family: Geneva;">a</div>
+									</div>
+									<label class="setting__name">Font family</label>
+									<small class="setting__value">Whimsical</small>
+								</div>
+							</div>
 
-								<fieldset>
-									<label>Custom</label>
-									<input type="number" />
-								</fieldset>
-							</fieldset>
-							<fieldset>
-								<label for="">Line spacing</label>
-								<input type="range" name="" value="50" />
-							</fieldset>
+							<div class="setting text-scale"
+										data-setting-type="scale"
+										data-setting-value="50"
+										data-setting-label="Text scale"
+										data-setting-description="The overall scale of all text on your site.">
+								<div class="setting__control">
+									<label class="setting__name">Text scale</label>
+									<small class="setting__value"><input type="range" name="" value="50" /></small>
+								</div>
+							</div>
+
+							<div class="setting line-spacing"
+										data-setting-type="space"
+										data-setting-value="75"
+										data-setting-label="Line space"
+										data-setting-description="The space between lines of text.">
+								<div class="setting__control">
+									<label class="setting__name">Line spacing</label>
+									<small class="setting__value"><input type="range" name="" value="75" /></small>
+								</div>
+							</div>
 						</div>
 					</li>
 				</ul>
 			</div>
 
 			<div class="sidebar-tab-content tab-blocks">
-				<h5>Text</h5>
-				<ul>
-					<li>Paragraph</li>
-					<li>Heading</li>
-					<li>List</li>
-					<li>Quote</li>
-					<li>Code</li>
-					<li>Classic</li>
-					<li>Preformatted</li>
-					<li>Pullquote</li>
-					<li>Table</li>
-					<li>Verse</li>
-				</ul>
-				<h5>Media</h5>
-				<ul>
-					<li>Image</li>
-					<li>Gallery</li>
-					<li>Audio</li>
-					<li>Cover</li>
-					<li>File</li>
-					<li>Media & Text</li>
-					<li>Video</li>
-				</ul>
-				<h5>Design</h5>
-				<ul>
-					<li>Buttons</li>
-					<li>Columns</li>
-					<li>Group</li>
-					<li>More</li>
-					<li>Page Break</li>
-					<li>Separator</li>
-					<li>Spacer</li>
-					<li>Site Logo</li>
-					<li>Site Tagline</li>
-					<li>Site Title</li>
-					<li>Template Part</li>
-					<li>Query</li>
-					<li>Query Loop</li>
-					<li>Query Pagination</li>
-					<li>Post Title</li>
-					<li>Post Content</li>
-					<li>Post Author</li>
-					<li>Post Comment</li>
-					<li>Post Comments</li>
-					<li>Post Comments Count</li>
-					<li>Post Comments Form</li>
-					<li>Post Date</li>
-					<li>Post Excerpt</li>
-					<li>Post Featured Image</li>
-					<li>Post Hierarchical Terms</li>
-					<li>Post Tags</li>
-					<li>Post Categories</li>
-					<li>Navigation (horizontal)</li>
-					<li>Navigation (vertical)</li>
-				</ul>
-				<h5>Widgets</h5>
-				<ul>
-					<li>Shortcode</li>
-					<li>Archives</li>
-					<li>Calendar</li>
-					<li>Categories</li>
-					<li>Custom HTML</li>
-					<li>Latest Comments</li>
-					<li>Latest Posts</li>
-					<li>RSS</li>
-					<li>Social Icons</li>
-					<li>Tag Cloud</li>
-					<li>Search</li>
-				</ul>
-				<h5>Embeds</h5>
+				<input type="search" placeholder="Search for blocks..." />
+
+				<div class="sidebar-accordion accordion-text-blocks">
+					<h4 class="sidebar-accordion__label">Text</h4>
+					<div class="sidebar-accordion__contents">
+						<ul>
+							<li>Paragraph</li>
+							<li>Heading</li>
+							<li>List</li>
+							<li>Quote</li>
+							<li>Code</li>
+							<li>Classic</li>
+							<li>Preformatted</li>
+							<li>Pullquote</li>
+							<li>Table</li>
+							<li>Verse</li>
+						</ul>
+					</div>
+				</div>
+
+				<div class="sidebar-accordion accordion-text-blocks">
+					<h4 class="sidebar-accordion__label">Media</h4>
+					<div class="sidebar-accordion__contents">
+						<ul>
+							<li>Image</li>
+							<li>Gallery</li>
+							<li>Audio</li>
+							<li>Cover</li>
+							<li>File</li>
+							<li>Media & Text</li>
+							<li>Video</li>
+						</ul>
+					</div>
+				</div>
+
+				<div class="sidebar-accordion accordion-text-blocks">
+					<h4 class="sidebar-accordion__label">Design</h4>
+					<div class="sidebar-accordion__contents">
+						<ul>
+							<li>Buttons</li>
+							<li>Columns</li>
+							<li>Group</li>
+							<li>More</li>
+							<li>Page Break</li>
+							<li>Separator</li>
+							<li>Spacer</li>
+							<li>Site Logo</li>
+							<li>Site Tagline</li>
+							<li>Site Title</li>
+							<li>Template Part</li>
+							<li>Query</li>
+							<li>Query Loop</li>
+							<li>Query Pagination</li>
+							<li>Post Title</li>
+							<li>Post Content</li>
+							<li>Post Author</li>
+							<li>Post Comment</li>
+							<li>Post Comments</li>
+							<li>Post Comments Count</li>
+							<li>Post Comments Form</li>
+							<li>Post Date</li>
+							<li>Post Excerpt</li>
+							<li>Post Featured Image</li>
+							<li>Post Hierarchical Terms</li>
+							<li>Post Tags</li>
+							<li>Post Categories</li>
+							<li>Navigation (horizontal)</li>
+							<li>Navigation (vertical)</li>
+						</ul>
+					</div>
+				</div>
+
+				<div class="sidebar-accordion accordion-text-blocks">
+					<h4 class="sidebar-accordion__label">Widgets</h4>
+					<div class="sidebar-accordion__contents">
+						<ul>
+							<li>Shortcode</li>
+							<li>Archives</li>
+							<li>Calendar</li>
+							<li>Categories</li>
+							<li>Custom HTML</li>
+							<li>Latest Comments</li>
+							<li>Latest Posts</li>
+							<li>RSS</li>
+							<li>Social Icons</li>
+							<li>Tag Cloud</li>
+							<li>Search</li>
+						</ul>
+					</div>
+				</div>
+
+				<div class="sidebar-accordion accordion-text-blocks">
+					<h4 class="sidebar-accordion__label">Embeds</h4>
+					<div class="sidebar-accordion__contents">
+						<ul>
+							<li>Twitter</li>
+							<li>Instagram</li>
+							<li>Facebook</li>
+							<li>Reddit</li>
+							<li>Like, 100 more...</li>
+						</ul>
+					</div>
+				</div>
 			</div>
 		</div>
 	</body>

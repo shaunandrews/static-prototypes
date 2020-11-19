@@ -62,7 +62,15 @@
   }
 }
 
-li.sidebar-accordion {
+.sidebar-tab-content {
+  display: none;
+
+  &.is-current {
+    display: block;
+  }
+}
+
+.sidebar-accordion {
   border-bottom: 1px solid #ccc;
 
   h4.sidebar-accordion__label {
@@ -70,260 +78,235 @@ li.sidebar-accordion {
     font-size: 13px;
     font-weight: 500;
 
-    /*
     &:hover {
       color: blue;
-      background: #efefef;
       cursor: pointer;
     }
-    */
   }
 
   .sidebar-accordion__contents {
     padding: 0 12px 12px 12px;
+    display: none;
+  }
+
+  &.is-open {
+    .sidebar-accordion__contents {
+      display: block;
+    }
   }
 }
 
-.customized {
-  position: relative;
-  top: 9px;
-  left: 2px;
-  display: inline-block;
-  text-indent: -5000px;
-  height: 8px;
-  width: 8px;
-  background: blue;
-  border-radius: 50%;
-}
-
-.color {
+.setting {
   position: relative;
 
-  .current-color {
-    padding: 6px;
-    display: flex;
-    cursor: pointer;
-    border-radius: 2px;
-
-    &:hover {
+  &.has-picker {
+    .setting__current {
       background: #efefef;
       color: blue;
     }
   }
 
-  .color__swatch {
-    height: 24px;
-    width: 24px;
-    margin-right: 12px;
-    border-radius: 50%;
-    border: 1px solid rgba( black, 0.4 );
-    background: white;
+  .setting__current {
+    display: flex;
+    padding: 6px;
+    border-radius: 2px;
+    cursor: pointer;
+
+    &:hover {
+      background: #efefef;
+      color: blue;
+    }
+
+    .setting__swatch {
+      height: 24px;
+      width: 24px;
+      margin-right: 12px;
+      pointer-events: none;
+      border: 1px solid rgba( black, 0.4 );
+      background: white;
+      position: relative;
+
+      &.swatch-color {
+        border-radius: 50%;
+      }
+
+      &.swatch-font {
+        border-radius: 2px;
+      }
+
+      .swatch-font__line-one {
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        text-shadow: 1px 0 0 white;
+      }
+      .swatch-font__line-two {
+        position: absolute;
+        top: -1px;
+        left: 11px;
+        text-shadow: 1px 0 0 white;
+      }
+    }
+
+    .setting__name {
+      flex-grow: 1;
+      pointer-events: none;
+    }
+
+    .setting__value {
+      pointer-events: none;
+    }
   }
 
-  .color__name {
-    flex-grow: 1;
-    line-height: 24px;
-    cursor: pointer;
+  .setting__control {
+    display: flex;
+    padding: 6px;
+
+    .setting__name {
+      width: 50%;
+      margin-left: 36px;
+    }
+    .setting__value {
+      padding-left: 12px;
+
+      input {
+        width: 100%;
+        position: relative;
+        top: 3px;
+      }
+    }
   }
 }
 
-.color-picker {
+.setting-picker {
   border-radius: 2px;
-  opacity: 0;
+  padding: 12px;
   background: white;
-  box-shadow: 0 2px 12px rgba( black, 0.6 );
-              //0 0 0 2000px rgba( black, 0.6 );
+  box-shadow: 0 2px 12px rgba( black, 0.3 );
   position: absolute;
   top: 38px;
   right: -6px;
   left: -6px;
   z-index: 1;
-  transform: translateY( 12px );
-  transition: all 0.15s ease-in-out;
 
-  .has-color-picker & {
-    opacity: 1;
-    transform: translateY( 0 );
-  }
+  // When first added its hidden
+  // and transitions into place.
+  opacity: 0;
+  transform: scale( 0.98 ) translateY( -18px );
+  transition: all 0.075s ease-out;
 
-  .color-picker__description {
+  .setting-picker__description {
+    color: #444;
     font-size: 13px;
     line-height: 140%;
-    //padding: 12px 12px 0 12px;
-    margin: 12px 12px 6px 12px;
-    padding-bottom: 12px;
-    border-bottom: 2px solid #efefef;
-    color: #555;
+    margin: 0 0 18px 0;
   }
 
-  .color-picker__simple {
-    padding: 6px 12px;
-
-    h5 {
-      font-size: 15px;
-      font-weight: 400;
-      margin-bottom: 9px;
-    }
-
-    .color-picker__swatches {
-      margin-bottom: 18px;
-
-      &:last-child {
-        margin-bottom: 6px;
-      }
-    }
+  .setting-picker__section-label {
+    font-size: 13px;
+    font-weight: 400;
+    margin-bottom: 6px;
   }
 
-  .color-picker__advanced {
-    display: none;
+  .has-picker & {
+    opacity: 1;
+    transform: scale( 1 ) translateY( 0 );
   }
+}
 
+.setting-picker__fonts {
+  .font {
+    cursor: pointer;
+    margin-bottom: 6px;
 
-  .color-picker__swatches {
-    display: flex;
-
-    .color__swatch {
-      height: 32px;
-      width: 32px;
-      margin-right: 12px;
-      border-radius: 50%;
-      border: 1px solid rgba( black, 0.4 );
-      cursor: pointer;
-      background: white;
+    .font__preview {
+      height: 50px;
+      padding: 6px 12px;
+      overflow: hidden;
+      border: 1px solid rgba( black, 0.2 );
+      border-radius: 2px;
       transition: all 0.15s ease-in-out;
 
-      &:hover {
+      .font__preview-line-one {
+        white-space: nowrap;
+        font-weight: 800;
+        font-size: 20px;
+        line-height: 1;
+        margin-bottom: 6px;
+      }
+
+      .font__preview-line-two {
+        white-space: nowrap;
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 1;
+      }
+    }
+
+    .font__name {
+      font-size: 13px;
+      text-align: center;
+    }
+
+    &:hover {
+      .font__preview {
+        border-color: rgba( black, 0.8 );
         box-shadow: 0 0 0 3px rgba( black, 0.2 );
       }
 
-      &.is-current {
-        border-color: white;
-        box-shadow: 0 0 0 3px blue;
-      }
-
-      &.add-new {
-        border-style: dashed;
-        svg {
-          display: block;
-          margin: 9px auto 0 auto;
-        }
+      .font__name {
+        color: blue;
       }
     }
-  }
 
-  .color-picker__type {
-    min-width: 100px;
-    display: block;
+    &.is-current {
+      .font__preview {
+        border: 1px solid black;
+        box-shadow: 0 0 0 1.5px blue;
+      }
+    }
 
-    margin: 6px;
-  }
-
-  .color-picker__rainbow {
-    height: 24px;
-    width: 100%;
-    margin: 0 0 6px 0;
-    position: relative;
-    border-radius: 2px 2px 0  0;
-    background: linear-gradient( to right, red 0%, #ff0 17%, lime 33%, cyan 50%, blue 66%, #f0f 83%, red 100% );
-
-    .color-picker__rainbow-selector {
-      width: 14px;
-      border-radius: 8px;
-      border: 1px solid rgba( black, 0.25 );
-      box-shadow: 0 2px 3px rgba( black, 0.2 ),
-                  0px 0px 0 3px white inset,
-                  0px 0px 0 4px rgba( black, 0.5 ) inset;
-      position: absolute;
-      top: -4px;
-      left: 30px;
-      bottom: -4px;
-      z-index: 10000;
+    &:last-child {
+      margin-bottom: 0;
     }
   }
+}
 
-  .color-picker__hue {
-    height: 120px;
-    width: 100%;
-    overflow: hidden;
-    position: relative;
+.setting-picker__colors {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
 
-    .color-picker__hue-color {
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-    }
-
-    .color-picker__hue-dark {
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      background: linear-gradient(to bottom, transparent 0%, #000 100%);
-    }
-
-    .color-picker__hue-light {
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      background: linear-gradient(to right, #fff 0%, rgba(255,255,255,0) 100%);
-    }
-
-    .color-picker__hue-selector {
-      height: 28px;
-      width: 28px;
-      border-radius: 50%;
-      border: 1px solid rgba( black, 0.25 );
-      box-shadow: 0 2px 3px rgba( black, 0.2 ),
-                  0px 0px 0 3px white inset,
-                  0px 0px 0 4px rgba( black, 0.5 ) inset;
-      position: absolute;
-      top: 0;
-      right: 0;
-    }
+  &:last-child {
+    margin-bottom: 0;
   }
 
-  .color-picker__alpha {
-    height: 24px;
-    width: 100%;
-    position: relative;
-    background: linear-gradient(to left, black 0%, rgba( black, 0 ) 100%);
+  .swatch {
+    height: 32px;
+    width: 32px;
+    margin-right: 12px;
+    border-radius: 50%;
+    border: 1px solid rgba( black, 0.4 );
+    cursor: pointer;
+    background: white;
+    transition: all 0.15s ease-in-out;
 
-    .color-picker__alpha-selector {
-      width: 14px;
-      border-radius: 8px;
-      border: 1px solid rgba( black, 0.25 );
-      box-shadow: 0 2px 3px rgba( black, 0.2 ),
-                  0px 0px 0 3px white inset,
-                  0px 0px 0 4px rgba( black, 0.5 ) inset;
-      position: absolute;
-      top: -4px;
-      left: 95%;
-      bottom: -4px;
-      z-index: 10000;
-    }
-  }
-
-  .color-current-details {
-    display: none;
-    padding: 12px;
-    border-top: 1px solid #ccc;
-
-    p {
-      margin-bottom: 6px;
-      font-size: 13px;
+    &:hover {
+      box-shadow: 0 0 0 3px rgba( black, 0.2 );
     }
 
-    button {
-      display: block;
+    &.is-current {
+      border-color: white;
+      box-shadow: 0 0 0 3px blue;
     }
 
-    .is-customized & {
-      display: block;
+    &.add-new {
+      border-style: dashed;
+
+      svg {
+        display: block;
+        margin: 9px auto 0 auto;
+      }
     }
   }
 }

@@ -45,7 +45,6 @@
   <p class="color-picker__description">&nbsp;</p>
 
   <div class="color-picker__simple">
-    <h5>Theme colors</h5>
     <div class="color-picker__swatches theme-colors">
       <div class="color__swatch color-blue" data-color-value="blue" style="background: blue;"></div>
       <div class="color__swatch color-purple" data-color-value="purple" style="background: purple;"></div>
@@ -56,6 +55,7 @@
 
     <h5>Custom colors</h5>
     <div class="color-picker__swatches custom-colors">
+      <div class="color__swatch color-orange" data-color-value="orange" style="background: orange;"></div>
       <div class="color__swatch add-new">
         <svg width="12" height="12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 6h12M6 0v12" stroke="#333" stroke-width="1.5"/></svg>
       </div>
@@ -87,7 +87,57 @@
   </div>
 
   <div class="color-current-details">
-    <p><span class="customized">Customized</span> Customized by Shaun A.</p>
     <button>Reset to theme default</button>
+  </div>
+</div>
+
+<div id="prototype__setting-picker" class="setting-picker">
+  <div class="setting-picker__description"></div>
+
+  <div class="font-picker">
+    <div class="setting-picker__fonts">
+      <div class="font is-current">
+        <div class="font__preview">
+          <div class="font__preview-line-one" style="font-family: Rockwell;">The quick brown fox jumps over the lazy dog.</div>
+          <div class="font__preview-line-two" style="font-family: Geneva;">Almost before we knew it, we had left the ground.</div>
+        </div>
+        <div class="font__name">Whimsical</div>
+      </div>
+      <div class="font">
+        <div class="font__preview">
+          <div class="font__preview-line-one" style="font-family: Tahoma;">The quick brown fox jumps over the lazy dog.</div>
+          <div class="font__preview-line-two" style="font-family: Georgia;">Almost before we knew it, we had left the ground.</div>
+        </div>
+        <div class="font__name">Professional</div>
+      </div>
+      <div class="font">
+        <div class="font__preview">
+          <div class="font__preview-line-one" style="font-family: Helvetica;">The quick brown fox jumps over the lazy dog.</div>
+          <div class="font__preview-line-two" style="font-family: Helvetica;">Almost before we knew it, we had left the ground.</div>
+        </div>
+        <div class="font__name">System</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="color-picker">
+    <div class="setting-picker__colors theme-colors">
+      <div class="swatch color-blue" data-color-value="blue" style="background: blue;"></div>
+      <div class="swatch color-purple" data-color-value="purple" style="background: purple;"></div>
+      <div class="swatch color-#333" data-color-value="#333" style="background: #333;"></div>
+      <div class="swatch color-white" data-color-value="white" style="background: white;"></div>
+      <div class="swatch color-green" data-color-value="green" style="background: green;"></div>
+    </div>
+
+    <h5 class="setting-picker__section-label">Custom colors</h5>
+
+    <div class="setting-picker__colors custom-colors">
+      <div class="swatch color-orange" data-color-value="orange" style="background: orange;"></div>
+      <div class="swatch add-new">
+        <svg width="12" height="12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 6h12M6 0v12" stroke="#333" stroke-width="1.5"/></svg>
+      </div>
+    </div>
+
+    <button class="setting-picker__revert">Reset to default</button>
   </div>
 </div>
