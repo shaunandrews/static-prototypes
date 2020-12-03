@@ -43,7 +43,7 @@ $( function() {
   } );
 
   // Clicking a block selects it and displays the toolbar
-  $( '.block' ).click( function( event ) {
+  $( '.canvas .block' ).click( function( event ) {
     var block = this,
         blockType = $( this ).data( 'blockType' ),
         parentBlock = $( this ).parent().closest( '.block-type__container' );

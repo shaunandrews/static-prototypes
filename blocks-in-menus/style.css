@@ -1,0 +1,148 @@
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 18px;
+  background: #fff;
+  color: #333;
+  line-height: 140%;
+  padding: 0;
+  margin: 90px 0 0 0;
+}
+body * {
+  box-sizing: border-box;
+  outline: none;
+}
+
+#components {
+  display: none;
+}
+
+.block-toolbar {
+  background: white;
+  border: 1px solid #333;
+  border-radius: 2px;
+  padding: 4px;
+  display: flex;
+  position: absolute;
+  top: -56px;
+  left: -2px;
+}
+.block-toolbar .block-toolbar__divider {
+  background: #333;
+  width: 1px;
+  height: 46px;
+  margin: -4px 4px;
+  text-indent: -5000px;
+}
+.block-toolbar .block-toolbar__button {
+  line-height: 0;
+  padding: 6px;
+}
+.block-toolbar .block-toolbar__button:hover {
+  background: #efefef;
+}
+.block-toolbar .block-toolbar__button.block-handle {
+  padding: 6px 0;
+  margin: 0 -2px;
+}
+.block-toolbar .block-toolbar__button.block-handle:hover {
+  background: none;
+  cursor: move;
+}
+.block-toolbar .block-toolbar__button.block-movers {
+  display: flex;
+  flex-wrap: wrap;
+  width: 32px;
+  padding: 0;
+  margin: -2px 0;
+}
+.block-toolbar .block-toolbar__button.block-movers svg {
+  height: 20px;
+  width: 32px;
+  position: relative;
+}
+.block-toolbar .block-toolbar__button.block-movers svg.icon-up {
+  top: 4px;
+}
+.block-toolbar .block-toolbar__button.block-movers svg.icon-down {
+  top: -4px;
+}
+
+button.toggle-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 32px;
+  height: 32px;
+  border-radius: 2px;
+}
+button.toggle-button svg {
+  transition: transform 0.05s ease-in-out;
+}
+button.toggle-button:hover {
+  background: #efefef;
+}
+button.toggle-button.is-toggled svg {
+  transform: rotate(90deg);
+}
+
+.item-actions {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  display: flex;
+  opacity: 0;
+}
+.item-actions .item-action {
+  display: block;
+  height: 32px;
+  border-radius: 2px;
+  text-align: center;
+  padding: 4px;
+  cursor: pointer;
+}
+.item-actions .item-action:hover {
+  background: #efefef;
+}
+.menu-item:hover .item-actions, .menu-item.is-selected .item-actions {
+  opacity: 1;
+}
+
+.menu-list-view {
+  width: 500px;
+  margin: 32px auto;
+}
+
+.menu-item {
+  font-size: 15px;
+  border-radius: 2px;
+  padding: 6px 6px 5px 34px;
+  position: relative;
+  border: 1px solid transparent;
+}
+.menu-item:hover {
+  border-color: #ccc;
+}
+.menu-item.is-selected {
+  z-index: 1;
+  border-color: blue;
+  box-shadow: 0 0 0 1px blue;
+}
+.menu-item.is-selected .menu-item__details {
+  display: block;
+}
+.menu-item .menu-item__details {
+  display: none;
+}
+
+.menu-children {
+  display: none;
+  margin-left: 18px;
+}
+.menu-children.is-open {
+  display: block;
+}
+
+/*# sourceMappingURL=style.css.map */

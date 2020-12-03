@@ -82,9 +82,14 @@ body.has-sidebar .sidebar {
 .setting {
   position: relative;
 }
-.setting.has-picker .setting__current {
-  background: #efefef;
+.setting.has-picker .setting__current,
+.setting.has-picker .setting__current:hover {
+  background: #fff;
   color: blue;
+}
+.setting.has-picker .setting__current .setting__swatch,
+.setting.has-picker .setting__current:hover .setting__swatch {
+  transform: scale(1.3);
 }
 .setting .setting__current {
   display: flex;
@@ -104,6 +109,7 @@ body.has-sidebar .sidebar {
   border: 1px solid rgba(0, 0, 0, 0.4);
   background: white;
   position: relative;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 .setting .setting__current .setting__swatch.swatch-color {
   border-radius: 50%;
@@ -177,9 +183,15 @@ body.has-sidebar .sidebar {
   transform: scale(1) translateY(0);
 }
 
+.setting-picker__fonts {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -12px;
+}
 .setting-picker__fonts .font {
+  width: calc( 50% - 12px );
   cursor: pointer;
-  margin-bottom: 6px;
+  margin: 0 6px 6px 6px;
 }
 .setting-picker__fonts .font .font__preview {
   height: 50px;
@@ -207,8 +219,7 @@ body.has-sidebar .sidebar {
   text-align: center;
 }
 .setting-picker__fonts .font:hover .font__preview {
-  border-color: rgba(0, 0, 0, 0.8);
-  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.2);
+  border-color: blue;
 }
 .setting-picker__fonts .font:hover .font__name {
   color: blue;
@@ -236,15 +247,24 @@ body.has-sidebar .sidebar {
   border-radius: 50%;
   border: 1px solid rgba(0, 0, 0, 0.4);
   cursor: pointer;
+  position: relative;
   background: white;
   transition: all 0.15s ease-in-out;
 }
 .setting-picker__colors .swatch:hover {
-  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
 }
-.setting-picker__colors .swatch.is-current {
-  border-color: white;
-  box-shadow: 0 0 0 3px blue;
+.setting-picker__colors .swatch.is-current svg {
+  background: rgba(255, 255, 255, 0.98);
+  border-radius: 50%;
+  transform: scale(0.75);
+  position: absolute;
+  top: 3px;
+  left: 3px;
+}
+.setting-picker__colors .swatch.is-current svg path {
+  stroke: blue;
+  stroke-width: 2px;
 }
 .setting-picker__colors .swatch.add-new {
   border-style: dashed;
@@ -252,6 +272,45 @@ body.has-sidebar .sidebar {
 .setting-picker__colors .swatch.add-new svg {
   display: block;
   margin: 9px auto 0 auto;
+}
+
+.search-blocks {
+  padding: 12px;
+  position: relative;
+}
+.search-blocks input {
+  border: none;
+  background: #efefef;
+  border-radius: 2px;
+  padding: 12px 18px;
+  width: 100%;
+  display: block;
+}
+.search-blocks input:focus {
+  background: white;
+  box-shadow: 0 0 0 1.5px blue;
+}
+.search-blocks svg {
+  position: absolute;
+  top: 19px;
+  right: 24px;
+  pointer-events: none;
+}
+
+ul.block-list li.block {
+  display: flex;
+  border-radius: 2px;
+  margin: 0;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+ul.block-list li.block:hover {
+  background: #efefef;
+}
+ul.block-list li.block .block__swatch {
+  height: 24px;
+  width: 24px;
+  margin-right: 12px;
 }
 
 /*# sourceMappingURL=global-styles.css.map */

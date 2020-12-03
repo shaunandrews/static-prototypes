@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Blocks in Menus</title>
+		<link rel="stylesheet" href="./style.css" type="text/css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script>
+			function showBlockToolbar( block ) {
+				var componentBlockToolbar = $( '#component__block-toolbar' ).clone( true ).removeAttr( 'id' );
+
+				componentBlockToolbar.appendTo( block );
+			}
+
+			function unselectAllBlocks() {
+				$( '.menu-item.is-selected' ).removeClass( 'is-selected' );
+				$( '.menu-item .block-toolbar' ).remove();
+				$( '.menu-item .menu-item__details' ).remove();
+			}
+
+			$( function() {
+				$( 'body' ).click( function() {
+					unselectAllBlocks();
+				} );
+
+				$( '.menu-item' ).click( function( event ) {
+					var menuItem = $( this );
+
+					unselectAllBlocks();
+
+					menuItem.toggleClass( 'is-selected' );
+
+					showBlockToolbar( menuItem );
+
+					event.stopPropagation();
+				} );
+
+				$( '.toggle-button' ).click( function( event ) {
+					var toggleButton = $( this ),
+							menuItem = toggleButton.parent(),
+							menuName = menuItem.data( 'name' ),
+							children = $( 'div[data-parent=' + menuName + ']' );
+
+					toggleButton.toggleClass( 'is-toggled' );
+					menuItem.toggleClass( 'is-open' );
+					children.toggleClass( 'is-open' );
+
+					event.stopPropagation();
+				} );
+
+				$( '.menu-item' ).each( function() {
+					var menuItem = $( this ),
+							hasChildren = menuItem.data( 'hasChildren' );
+
+					// Add Toggle Button
+					if ( hasChildren ) {
+						var componentToggleButton = $( '#component__toggle-button' ).clone( true ).removeAttr( 'id' );
+						componentToggleButton.appendTo( menuItem );
+					}
+				} );
+
+				// Show details when selecting an item
+				$( '.menu-item' ).click( function() {
+					var menuItem = $( this ),
+							blockType = menuItem.data( 'type' ),
+							detailType = menuItem.data( 'detailType' ),
+							detailLabel = menuItem.data( 'detailLabel' ),
+							detailUrl = menuItem.data( 'detailUrl' );
+
+					if ( blockType == 'link' ) {
+						// Add item details
+						var componentItemDetails = $( '#component__item-details' ).clone( true ).removeAttr( 'id' );
+						componentItemDetails.find( '.details__type' ).html( detailType );
+						componentItemDetails.find( '.details__label' ).html( detailLabel );
+						componentItemDetails.find( '.details__url' ).html( detailUrl );
+						componentItemDetails.appendTo( menuItem );
+					}
+				} );
+
+				// This isn't working
+				$( '.block-more-menu' ).click( function() {
+					var toolbar = $( this ).parent(),
+							componentMoreMenu = $( '#component__more-menu' ).clone( true ).removeAttr( 'id' );
+					componentMoreMenu.appendTo( toolbar );
+					console.log( toolbar );
+				} );
+      } );
+		</script>
+	</head>
+	<body>
+		<div id="components">
+			<div id="components__icons">
+				<svg
+					class="icon icon-plus"
+					xmlns="http://www.w3.org/2000/svg"
+					viewBox="0 0 24 24">
+					<path d="M18 11.2h-5.2V6h-1.6v5.2H6v1.6h5.2V18h1.6v-5.2H18z" />
+				</svg>
+
+				<svg
+					class="icon icon-plus-small"
+					xmlns="http://www.w3.org/2000/svg"
+					viewBox="0 0 24 24">
+					<path d="M8 12h8M12 8v8" stroke="#1E1E1E" stroke-width="1.5"/>
+				</svg>
+
+				<svg
+					class="icon icon-add-submenu"
+					xmlns="http://www.w3.org/2000/svg"
+					viewBox="0 0 24 24">
+					<path d="M13.5 11h8v1.5h-8V11zm0 5h8l.028 1.5h-8L13.5 16zM2 12c0 3.58 2.42 5.5 6 5.5h.5V19l3-2.5-3-2.5v2H8c-2.48 0-4.5-1.52-4.5-4S5.52 7.5 8 7.5h3.5V6H8c-3.58 0-6 2.42-6 6zM21.5 6h-8v1.5h8V6z" fill="#1E1E1E"/>
+				</svg>
+
+				<svg
+					class="icon icon-drag"
+					width="24"
+					height="24"
+					xmlns="http://www.w3.org/2000/svg">
+					<path fill="#1E1E1E" d="M8 5h2v2H8zM8 11h2v2H8zM8 17h2v2H8zM14 5h2v2h-2zM14 11h2v2h-2zM14 17h2v2h-2z"/>
+				</svg>
+			</div>
+
+			<div id="component__block-toolbar" class="block-toolbar">
+				<div class="block-toolbar__button block-chip">
+					<svg
+						height="24px"
+						width="24px"
+						class="icon-block icon"
+						xmlns="http://www.w3.org/2000/svg"
+						viewBox="0 0 24 24">
+						<path d="M19 8h-1V6h-5v2h-2V6H6v2H5c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-8c0-1.1-.9-2-2-2zm.5 10c0 .3-.2.5-.5.5H5c-.3 0-.5-.2-.5-.5v-8c0-.3.2-.5.5-.5h14c.3 0 .5.2.5.5v8z" />
+					</svg>
+				</div>
+				<div class="block-toolbar__button block-handle">
+					<svg
+						class="icon icon-handle"
+						width="24"
+						height="24"
+						xmlns="http://www.w3.org/2000/svg"
+						viewBox="0 0 24 24">
+						<path fill="#1E1E1E" d="M8 5h2v2H8zM8 11h2v2H8zM8 17h2v2H8zM14 5h2v2h-2zM14 11h2v2h-2zM14 17h2v2h-2z"/>
+					</svg>
+				</div>
+				<div class="block-toolbar__button block-movers">
+					<svg
+						height="24px"
+						width="24px"
+						class="icon-up icon"
+						viewBox="0 0 24 24"
+						xmlns="http://www.w3.org/2000/svg">
+						<Path d="M6.5 12.4L12 8l5.5 4.4-.9 1.2L12 10l-4.5 3.6-1-1.2z" />
+					</svg>
+					<svg
+						height="24px"
+						width="24px"
+						class="icon-down icon"
+						viewBox="0 0 24 24"
+						xmlns="http://www.w3.org/2000/svg">
+						<Path d="M17.5 11.6L12 16l-5.5-4.4.9-1.2L12 14l4.5-3.6 1 1.2z" />
+					</svg>
+				</div>
+
+				<div class="block-toolbar__divider">|</div>
+
+				<div class="block-toolbar__button">
+					<svg
+						height="24px"
+						width="24px"
+						class="icon icon-add-submenu"
+						xmlns="http://www.w3.org/2000/svg"
+						viewBox="0 0 24 24">
+						<path d="M13.5 11h8v1.5h-8V11zm0 5h8l.028 1.5h-8L13.5 16zM2 12c0 3.58 2.42 5.5 6 5.5h.5V19l3-2.5-3-2.5v2H8c-2.48 0-4.5-1.52-4.5-4S5.52 7.5 8 7.5h3.5V6H8c-3.58 0-6 2.42-6 6zM21.5 6h-8v1.5h8V6z" fill="#1E1E1E"/>
+					</svg>
+				</div>
+
+				<div class="block-toolbar__divider">|</div>
+
+				<div class="block-toolbar__button block-more-menu">
+					<svg
+						height="24px"
+						width="24px"
+						class="icon icon-more"
+						xmlns="http://www.w3.org/2000/svg"
+						viewBox="0 0 24 24">
+						<path d="M13 19h-2v-2h2v2zm0-6h-2v-2h2v2zm0-6h-2V5h2v2z" />
+					</svg>
+				</div>
+			</div>
+
+			<button id="component__toggle-button"
+				class="toggle-button">
+				<svg
+					icon="icon-chevron-right icon"
+					xmlns="http://www.w3.org/2000/svg"
+					viewBox="0 0 24 24">
+					<path d="M10.6 6L9.4 7l4.6 5-4.6 5 1.2 1 5.4-6z" />
+				</svg>
+			</button>
+
+			<div id="component__item-details" class="menu-item__details">
+				<em class="details__type">Type</em>
+				<span class="details__label">Label</span>
+				<small class="details__url">URL</small>
+				<button class="details__edit">Edit</button>
+			</div>
+
+			<ul id="component__more-menu" class="more-menu">
+				<li>Duplicate</li>
+				<li>Move to&hellip;</li>
+				<li><hr /></li>
+				<li>Add above</li>
+				<li>Add below</li>
+				<li><hr /></li>
+				<li>Remove link</li>
+			</ul>
+		</div>
+
+		<div class="menu-list-view">
+			<div
+				class="menu-item block-type__link"
+				data-type="link"
+				data-name="home"
+				data-has-children="false"
+
+				data-detail-type="Page"
+				data-detail-label="Home"
+				data-detail-url="/">
+				<label contenteditable="true">Home</label>
+			</div>
+			<div
+				class="menu-item block-type__link has-children"
+				data-type="link"
+				data-name="services"
+				data-has-children="true"
+				data-detail-type="Page"
+				data-detail-label="Services"
+				data-detail-url="/services/">
+				<label contenteditable="true">Services</label>
+			</div>
+			<div class="menu-children" data-parent="services">
+				<div
+					class="menu-item block-type__link"
+					data-type="link"
+					data-has-children="false"
+					data-detail-type="Page"
+					data-detail-label="Social Media"
+					data-detail-url="/services/social-media/">
+					<label contenteditable="true">Social Media</label>
+				</div>
+				<div
+					class="menu-item block-type__link"
+					data-type="link"
+					data-has-children="false"
+					data-detail-type="Page"
+					data-detail-label="TV"
+					data-detail-url="/services/tv/">
+					<label contenteditable="true">Television</label>
+				</div>
+				<div
+					class="menu-item block-type__link"
+					data-type="link"
+					data-has-children="false"
+					data-detail-type="Page"
+					data-detail-label="Radio and Podcasts"
+					data-detail-url="/services/audio/">
+					<label contenteditable="true">Radio &amp; Podcasts</label>
+				</div>
+			</div>
+
+			<div
+				class="menu-item block-type__link has-children"
+				data-type="link"
+				data-name="portfolio"
+				data-has-children="true"
+				data-detail-type="Category"
+				data-detail-label="Our Work"
+				data-detail-url="/category/portfolio/">
+				<label contenteditable="true">Portfolio</label>
+			</div>
+			<div class="menu-children" data-parent="portfolio">
+				<div
+					class="menu-item block-type__link"
+					data-type="link"
+					data-has-children="false"
+					data-detail-type="Page"
+					data-detail-label="Case Studies"
+					data-detail-url="/portfolio/case-studies/">
+					<label contenteditable="true">Case Studies</label>
+				</div>
+				<div
+					class="menu-item block-type__link"
+					data-type="link"
+					data-has-children="false"
+					data-detail-type="Page"
+					data-detail-label="What Clients Say About Us"
+					data-detail-url="/portfolio/testimonials/">
+					<label contenteditable="true">Testimonials</label>
+				</div>
+			</div>
+
+			<div
+				class="menu-item block-type__link has-children"
+				data-type="link"
+				data-name="about"
+				data-has-children="true"
+				data-detail-type="Page"
+				data-detail-label="About"
+				data-detail-url="/about/">
+				<label contenteditable="true">About</label>
+			</div>
+			<div class="menu-children" data-parent="about">
+				<div
+					class="menu-item block-type__link"
+					data-type="link"
+					data-has-children="false">
+					<label contenteditable="true">Founders</label>
+				</div>
+				<div
+					class="menu-item block-type__link"
+					data-type="link"
+					data-has-children="false">
+					<label contenteditable="true">Board and Trustees</label>
+				</div>
+				<div
+					class="menu-item block-type__link"
+					data-type="link"
+					data-has-children="false">
+					<label contenteditable="true">Creative Staff</label>
+				</div>
+				<div
+					class="menu-item block-type__link"
+					data-type="link"
+					data-has-children="false">
+					<label contenteditable="true">Careers</label>
+				</div>
+			</div>
+
+			<div
+				class="menu-item block-type__link"
+				data-type="link"
+				data-name="location"
+				data-has-children="false"
+				data-detail-type="Page"
+				data-detail-label="Location"
+				data-detail-url="/about/location/">
+				<label contenteditable="true">Location</label>
+			</div>
+			<div
+				class="menu-item block-type__link"
+				data-type="link"
+				data-name="contact"
+				data-has-children="false"
+				data-detail-type="Page"
+				data-detail-label="Contact"
+				data-detail-url="/about/contact/">
+				<label contenteditable="true">Contact</label>
+			</div>
+			<div
+				class="menu-item block-type__paragraph"
+				data-type="paragraph"
+				data-name="paragraph"
+				data-has-children="false">
+				<label contenteditable="true">Call anytime at 1-800-902-1000</label>
+			</div>
+			<div
+				class="menu-item block-type__social-icons has-children"
+				data-type="social-icons"
+				data-name="social-icons"
+				data-has-children="true">
+				<label>Social Icons</label>
+			</div>
+			<div class="menu-children" data-parent="social-icons">
+				<div
+					class="menu-item"
+					data-type="social-icon"
+					data-has-children="false">
+					<label contenteditable="true">Facebook</label>
+				</div>
+				<div
+					class="menu-item"
+					data-type="social-icon"
+					data-has-children="false">
+					<label contenteditable="true">Twitter</label>
+				</div>
+				<div
+					class="menu-item"
+					data-type="social-icon"
+					data-has-children="false">
+					<label contenteditable="true">Instagram</label>
+				</div>
+			</div>
+
+
+			<div
+				class="menu-item block-type__search"
+				data-type="search"
+				data-has-children="false">
+				<label contenteditable="true">Search</label>
+			</div>
+		</div>
+	</body>
+</html>

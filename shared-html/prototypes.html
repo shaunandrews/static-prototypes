@@ -122,18 +122,18 @@
 
   <div class="color-picker">
     <div class="setting-picker__colors theme-colors">
-      <div class="swatch color-blue" data-color-value="blue" style="background: blue;"></div>
-      <div class="swatch color-purple" data-color-value="purple" style="background: purple;"></div>
-      <div class="swatch color-#333" data-color-value="#333" style="background: #333;"></div>
-      <div class="swatch color-white" data-color-value="white" style="background: white;"></div>
-      <div class="swatch color-green" data-color-value="green" style="background: green;"></div>
+      <div onclick="colorSelect( $( this ).data( 'colorValue' ), $( this ).closest( '.color-picker' ) );" class="swatch color-blue" data-color-value="blue" style="background: blue;"></div>
+      <div onclick="colorSelect( $( this ).data( 'colorValue' ), $( this ).closest( '.color-picker' ) );" class="swatch color-purple" data-color-value="purple" style="background: purple;"></div>
+      <div onclick="colorSelect( $( this ).data( 'colorValue' ), $( this ).closest( '.color-picker' ) );" class="swatch color-#333" data-color-value="#333" style="background: #333;"></div>
+      <div onclick="colorSelect( $( this ).data( 'colorValue' ), $( this ).closest( '.color-picker' ) );" class="swatch color-white" data-color-value="white" style="background: white;"></div>
+      <div onclick="colorSelect( $( this ).data( 'colorValue' ), $( this ).closest( '.color-picker' ) );" class="swatch color-green" data-color-value="green" style="background: green;"></div>
     </div>
 
     <h5 class="setting-picker__section-label">Custom colors</h5>
 
     <div class="setting-picker__colors custom-colors">
-      <div class="swatch color-orange" data-color-value="orange" style="background: orange;"></div>
-      <div class="swatch add-new">
+      <div onclick="colorSelect( $( this ).data( 'colorValue' ), $( this ).closest( '.color-picker' ) );" class="swatch color-orange" data-color-value="orange" style="background: orange;"></div>
+      <div onclick="colorAddNew();" class="swatch add-new">
         <svg width="12" height="12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 6h12M6 0v12" stroke="#333" stroke-width="1.5"/></svg>
       </div>
     </div>
@@ -141,3 +141,7 @@
     <button class="setting-picker__revert">Reset to default</button>
   </div>
 </div>
+
+<!-- Icons -->
+<!-- check -->
+<svg id="prototype__icon-check" class="icon-check" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18.935 6l-8.9 11.97-5.162-3.837" stroke="#1E1E1E" stroke-width="1.5"/></svg>

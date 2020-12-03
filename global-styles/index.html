@@ -12,119 +12,9 @@
 
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 		<script src="../shared-scripts/blocks.js"></script>
+		<script src="../shared-scripts/global-styles.js"></script>
 		<script>
 			$( function() {
-				// Click the top toolbar button to toggle the appearance sidebar
-				$( '.sidebar-toggle' ).click( function() {
-					$( 'body' ).toggleClass( 'has-sidebar' );
-				} );
-
-				// Click on a color to open the color picker
-				$( '.current-color' ).click( function() {
-					var currentColor = $( this ),
-							color = $( this ).parent();
-
-					if ( $( 'body' ).hasClass( 'showing-color-picker' ) ) {
-						$( '.sidebar .color-picker' ).remove();
-					}
-
-					if ( color.hasClass( 'has-color-picker' ) ) {
-						color.removeClass( 'has-color-picker' );
-						color.removeClass( 'is-customized' );
-						$( 'body' ).removeClass( 'showing-color-picker' );
-						window.setTimeout( function() {
-							$( '.sidebar .color-picker' ).remove();
-						}, 150 );
-					} else {
-						var colorPicker = $( '#prototype__color-picker' ).clone( true ).removeAttr( 'id' ),
-								colorValue = color.data( 'colorValue' ),
-								colorLabel = color.data( 'colorLabel' ),
-								colorDescription = color.data( 'colorDescription' ),
-								colorCustomized = color.data( 'colorCustomized' );
-
-						colorPicker.find( '.color-picker__label' ).html( colorLabel );
-						colorPicker.find( '.color-picker__description' ).html( colorDescription );
-						colorPicker.find( '.color-picker__hue-color' ).css( 'background', colorValue );
-
-						if ( colorCustomized == true ) {
-							color.addClass( 'is-customized' );
-						}
-
-						if ( colorValue == 'purple' ) {
-							colorPicker.find( '.color-picker__swatches.theme-colors .color-purple' ).addClass( 'is-current' );
-						}
-						if ( colorValue == '#333' ) {
-							colorPicker.find( '.color-picker__swatches.theme-colors .color-333' ).addClass( 'is-current' );
-						}
-						if ( colorValue == 'white' ) {
-							colorPicker.find( '.color-picker__swatches.theme-colors .color-white' ).addClass( 'is-current' );
-						}
-						if ( colorValue == 'blue' ) {
-							colorPicker.find( '.color-picker__swatches.theme-colors .color-blue' ).addClass( 'is-current' );
-						}
-						if ( colorValue == 'green' ) {
-							colorPicker.find( '.color-picker__swatches.theme-colors .color-green' ).addClass( 'is-current' );
-						}
-
-						colorPicker.appendTo( color );
-						$( 'body' ).addClass( 'showing-color-picker' );
-						window.setTimeout( function() {
-							color.addClass( 'has-color-picker' );
-						}, 0 );
-					}
-				} );
-
-				// Click on a setting to open it's picker
-				$( '.setting__current' ).click( function() {
-					var currentSetting = $( this ),
-							setting = currentSetting.parent(),
-							settingType = setting.data( 'settingType' ),
-							settingValue = setting.data( 'settingValue' ),
-							settingLabel = setting.data( 'settingLabel' ),
-							settingIsCustom = setting.data( 'settingIsCustom' ),
-							settingDescription = setting.data( 'settingDescription' );
-
-					// If the picker is already displayed, hide it...
-					if ( setting.hasClass( 'has-picker' ) ) {
-						// Remove the class from the container
-						setting.removeClass( 'has-picker' );
-
-						// Remove any pickers that might already exist
-						// The timer is to allow the transition to finish first.
-						window.setTimeout( function() {
-							setting.find( '.setting-picker' ).remove();
-						}, 150 );
-
-					// If the picker isn't displayed, show it...
-					} else {
-						// Grab the prototype
-						settingPicker = $( '#prototype__setting-picker' ).clone( true ).removeAttr( 'id' );
-						settingPicker.find( '.setting-picker__description' ).html( settingDescription );
-
-						if ( settingType == 'font' ) {
-							settingPicker.find( '.color-picker' ).remove();
-						}
-
-						if ( settingType == 'color' ) {
-							settingPicker.find( '.font-picker' ).remove();
-							settingPicker.find( "[data-color-value='" + settingValue + "']" ).addClass( 'is-current' );
-
-							if ( !settingIsCustom ) {
-								settingPicker.find( '.setting-picker__revert' ).remove();
-							}
-						}
-
-						// Append the picker into the container
-						settingPicker.appendTo( setting );
-
-						// Add the container class after a split second to allow
-						// the transition to take place.
-						window.setTimeout( function() {
-							setting.addClass( 'has-picker' );
-						}, 0 );
-					}
-				} );
-
 				// Click on sidebar tabs to swap content
 				$( '.sidebar-tabs li' ).click( function() {
 					var tab = $( this ),
@@ -146,6 +36,23 @@
 
 					accordion.toggleClass( 'is-open' );
 					console.log( accordion );
+				} );
+
+				// Clicking a block in the Global Styles sidebar should
+				// somehow indicate the blocks on the canvas that will
+				// be affected by changes.
+				$( '.global-styles .block' ).click( function() {
+					var globalBlock = $( this ),
+							blockType = globalBlock.data( 'blockType' );
+
+					removeAllBlockHighlighting();
+					highlightBlockByType( blockType );
+
+					//globalBlock.toggleClass( 'is-highlighting' );
+
+					if ( globalBlock.hasClass( 'is-highlighting' ) ) {
+
+					}
 				} );
 			} );
 		</script>
@@ -398,22 +305,70 @@
 			</div>
 
 			<div class="sidebar-tab-content tab-blocks">
-				<input type="search" placeholder="Search for blocks..." />
+				<div class="search-blocks">
+					<input type="search" placeholder="Search for blocks..." />
+					<svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 18l4-3.5" stroke="#1E1E1E" stroke-width="1.5"/><circle cx="13.5" cy="11.5" r="4.75" stroke="#1E1E1E" stroke-width="1.5"/></svg>
+				</div>
 
-				<div class="sidebar-accordion accordion-text-blocks">
+				<div class="sidebar-accordion accordion-text-blocks is-open">
 					<h4 class="sidebar-accordion__label">Text</h4>
+
 					<div class="sidebar-accordion__contents">
-						<ul>
-							<li>Paragraph</li>
-							<li>Heading</li>
-							<li>List</li>
-							<li>Quote</li>
-							<li>Code</li>
-							<li>Classic</li>
-							<li>Preformatted</li>
-							<li>Pullquote</li>
-							<li>Table</li>
-							<li>Verse</li>
+						<ul class="block-list">
+							<li class="block setting"
+									data-block-type="paragraph">
+								<div class="block__swatch">
+									<svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path stroke="#1E1E1E" stroke-width="1.5" d="M14.917 20V4.889M10.472 20V4.889M18.333 4.75H9.444"/><path d="M9.139 8.889v4.071a4.14 4.14 0 010-8.142v4.07z" fill="#1E1E1E" stroke="#1E1E1E" stroke-width="1.5"/></svg>
+								</div>
+								<div class="block__name">Paragraph</div>
+							</li>
+							<li class="block"
+									data-block-type="heading">
+								<div class="block__swatch">
+									<svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 6v11l5-4.125L17 17V6H7z" fill="#1E1E1E" stroke="#1E1E1E" stroke-width="1.5"/></svg>
+								</div>
+								<div class="block__name">Heading</div>
+							</li>
+							<li class="block"
+									data-block-type="list">
+								<div class="block__swatch">
+									<svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M20 5.5H4V4h16v1.5zM20 12.5h-8V11h8v1.5zM20 20H4v-1.5h16V20z" fill="#1E1E1E"/><circle cx="6" cy="12" r="2" fill="#1E1E1E"/></svg>
+								</div>
+								<div class="block__name">List</div>
+							</li>
+							<li class="block"
+									data-block-type="quote">
+								<div class="block__swatch">
+									<svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13 6h6v6h-6V6zM4 6h6v6H4V6z" fill="#1E1E1E"/><path d="M19 6v9.998c0 3.2-2.5 3-4 3M10 6v9.998c0 3.2-2.5 3-4 3" stroke="#1E1E1E" stroke-width="1.5"/></svg>
+								</div>
+								<div class="block__name">Quote</div>
+							</li>
+							<li class="block">
+								<div class="block__swatch">
+									<svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 17l4.294-4.31a1 1 0 00-.002-1.414L16 7M8 17l-4.294-4.31a1 1 0 01.002-1.414L8 7" stroke="#1E1E1E" stroke-width="1.5"/></svg>
+								</div>
+								<div class="block__name">Code</div>
+							</li>
+							<li class="block">
+								<div class="block__swatch"></div>
+								<div class="block__name">Classic</div>
+							</li>
+							<li class="block">
+								<div class="block__swatch"></div>
+								<div class="block__name">Preformatted</div>
+							</li>
+							<li class="block">
+								<div class="block__swatch"></div>
+								<div class="block__name">Pullquote</div>
+							</li>
+							<li class="block">
+								<div class="block__swatch"></div>
+								<div class="block__name">Table</div>
+							</li>
+							<li class="block">
+								<div class="block__swatch"></div>
+								<div class="block__name">Verse</div>
+							</li>
 						</ul>
 					</div>
 				</div>
@@ -421,14 +376,37 @@
 				<div class="sidebar-accordion accordion-text-blocks">
 					<h4 class="sidebar-accordion__label">Media</h4>
 					<div class="sidebar-accordion__contents">
-						<ul>
-							<li>Image</li>
-							<li>Gallery</li>
-							<li>Audio</li>
-							<li>Cover</li>
-							<li>File</li>
-							<li>Media & Text</li>
-							<li>Video</li>
+						<ul class="block-list">
+							<li class="block"
+									data-block-type="image">
+								<div class="block__swatch"></div>
+								<div class="block__name">Image</div>
+							</li>
+							<li class="block">
+								<div class="block__swatch"></div>
+								<div class="block__name">Gallery</div>
+							</li>
+							<li class="block">
+								<div class="block__swatch"></div>
+								<div class="block__name">Audio</div>
+							</li>
+							<li class="block"
+									data-block-type="cover">
+								<div class="block__swatch"></div>
+								<div class="block__name">Cover</div>
+							</li>
+							<li class="block">
+								<div class="block__swatch"></div>
+								<div class="block__name">File</div>
+							</li>
+							<li class="block">
+								<div class="block__swatch"></div>
+								<div class="block__name">Media & Text</div>
+							</li>
+							<li class="block">
+								<div class="block__swatch"></div>
+								<div class="block__name">Video</div>
+							</li>
 						</ul>
 					</div>
 				</div>
