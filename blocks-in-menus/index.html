@@ -7,7 +7,23 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 		<script>
 			function showBlockToolbar( block ) {
-				var componentBlockToolbar = $( '#component__block-toolbar' ).clone( true ).removeAttr( 'id' );
+				var componentBlockToolbar = $( '#component__block-toolbar' ).clone( true ).removeAttr( 'id' ),
+						blockType = block.data( 'type' );
+
+				if ( blockType == "paragraph" ) {
+					var paragraphIcon = $( '#components__icons .icon-paragraph' ).clone( true );
+					componentBlockToolbar.find( '.block-chip' ).html( paragraphIcon );
+				}
+
+				if ( blockType == "social-icons" ) {
+					var shareIcon = $( '#components__icons .icon-share' ).clone( true );
+					componentBlockToolbar.find( '.block-chip' ).html( shareIcon );
+				}
+
+				if ( blockType == "search" ) {
+					var searchIcon = $( '#components__icons .icon-search' ).clone( true );
+					componentBlockToolbar.find( '.block-chip' ).html( searchIcon );
+				}
 
 				componentBlockToolbar.appendTo( block );
 			}
@@ -63,6 +79,7 @@
 				$( '.menu-item' ).click( function() {
 					var menuItem = $( this ),
 							blockType = menuItem.data( 'type' ),
+							hasChildren = menuItem.data( 'hasChildren' ),
 							detailType = menuItem.data( 'detailType' ),
 							detailLabel = menuItem.data( 'detailLabel' ),
 							detailUrl = menuItem.data( 'detailUrl' );
@@ -73,6 +90,11 @@
 						componentItemDetails.find( '.details__type' ).html( detailType );
 						componentItemDetails.find( '.details__label' ).html( detailLabel );
 						componentItemDetails.find( '.details__url' ).html( detailUrl );
+
+						if ( ! hasChildren ) {
+							componentItemDetails.find( '.details__children-settings' ).remove();
+						}
+
 						componentItemDetails.appendTo( menuItem );
 					}
 				} );
@@ -81,8 +103,9 @@
 				$( '.block-more-menu' ).click( function() {
 					var toolbar = $( this ).parent(),
 							componentMoreMenu = $( '#component__more-menu' ).clone( true ).removeAttr( 'id' );
+
+					console.log( toolbar, componentMoreMenu );
 					componentMoreMenu.appendTo( toolbar );
-					console.log( toolbar );
 				} );
       } );
 		</script>
@@ -90,6 +113,42 @@
 	<body>
 		<div id="components">
 			<div id="components__icons">
+				<svg
+					height="24px"
+					width="24px"
+					class="icon-block icon"
+					xmlns="http://www.w3.org/2000/svg"
+					viewBox="0 0 24 24">
+					<path d="M19 8h-1V6h-5v2h-2V6H6v2H5c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-8c0-1.1-.9-2-2-2zm.5 10c0 .3-.2.5-.5.5H5c-.3 0-.5-.2-.5-.5v-8c0-.3.2-.5.5-.5h14c.3 0 .5.2.5.5v8z" />
+				</svg>
+
+				<SVG
+					height="24px"
+					width="24px"
+					class="icon-search icon"
+					xmlns="http://www.w3.org/2000/svg"
+					viewBox="0 0 24 24">
+					<Path d="M13.5 6C10.5 6 8 8.5 8 11.5c0 1.1.3 2.1.9 3l-3.4 3 1 1.1 3.4-2.9c1 .9 2.2 1.4 3.6 1.4 3 0 5.5-2.5 5.5-5.5C19 8.5 16.5 6 13.5 6zm0 9.5c-2.2 0-4-1.8-4-4s1.8-4 4-4 4 1.8 4 4-1.8 4-4 4z" />
+				</SVG>
+
+				<SVG
+					height="24px"
+					width="24px"
+					class="icon-share icon"
+					xmlns="http://www.w3.org/2000/svg"
+					viewBox="0 0 24 24">
+					<Path d="M9 11.8l6.1-4.5c.1.4.4.7.9.7h2c.6 0 1-.4 1-1V5c0-.6-.4-1-1-1h-2c-.6 0-1 .4-1 1v.4l-6.4 4.8c-.2-.1-.4-.2-.6-.2H6c-.6 0-1 .4-1 1v2c0 .6.4 1 1 1h2c.2 0 .4-.1.6-.2l6.4 4.8v.4c0 .6.4 1 1 1h2c.6 0 1-.4 1-1v-2c0-.6-.4-1-1-1h-2c-.5 0-.8.3-.9.7L9 12.2v-.4z" />
+				</SVG>
+
+				<SVG
+					height="24px"
+					width="24px"
+					class="icon-link icon"
+					xmlns="http://www.w3.org/2000/svg"
+					viewBox="0 0 24 24">
+					<Path d="M15.6 7.2H14v1.5h1.6c2 0 3.7 1.7 3.7 3.7s-1.7 3.7-3.7 3.7H14v1.5h1.6c2.8 0 5.2-2.3 5.2-5.2 0-2.9-2.3-5.2-5.2-5.2zM4.7 12.4c0-2 1.7-3.7 3.7-3.7H10V7.2H8.4c-2.9 0-5.2 2.3-5.2 5.2 0 2.9 2.3 5.2 5.2 5.2H10v-1.5H8.4c-2 0-3.7-1.7-3.7-3.7zm4.6.9h5.3v-1.5H9.3v1.5z" />
+				</SVG>
+
 				<svg
 					class="icon icon-plus"
 					xmlns="http://www.w3.org/2000/svg"
@@ -118,18 +177,26 @@
 					xmlns="http://www.w3.org/2000/svg">
 					<path fill="#1E1E1E" d="M8 5h2v2H8zM8 11h2v2H8zM8 17h2v2H8zM14 5h2v2h-2zM14 11h2v2h-2zM14 17h2v2h-2z"/>
 				</svg>
+
+				<SVG
+					class="icon icon-paragraph"
+					width="24"
+					height="24"
+					xmlns="http://www.w3.org/2000/svg">
+					<Path d="M18.3 4H9.9v-.1l-.9.2c-2.3.4-4 2.4-4 4.8s1.7 4.4 4 4.8l.7.1V20h1.5V5.5h2.9V20h1.5V5.5h2.7V4z" />
+				</SVG>
 			</div>
 
 			<div id="component__block-toolbar" class="block-toolbar">
 				<div class="block-toolbar__button block-chip">
-					<svg
+					<SVG
 						height="24px"
 						width="24px"
-						class="icon-block icon"
+						class="icon-map-marker icon"
 						xmlns="http://www.w3.org/2000/svg"
 						viewBox="0 0 24 24">
-						<path d="M19 8h-1V6h-5v2h-2V6H6v2H5c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-8c0-1.1-.9-2-2-2zm.5 10c0 .3-.2.5-.5.5H5c-.3 0-.5-.2-.5-.5v-8c0-.3.2-.5.5-.5h14c.3 0 .5.2.5.5v8z" />
-					</svg>
+						<Path d="M12.5 4C8.9 4 6 6.8 6 10.2c0 .8.3 1.8.9 3.1.5 1.1 1.2 2.3 2 3.6.7 1 3 3.8 3.2 3.9l.4.5.4-.5c.2-.2 2.6-2.9 3.2-3.9.8-1.2 1.5-2.5 2-3.6.6-1.3.9-2.3.9-3.1C19 6.8 16.1 4 12.5 4zm4.3 8.7c-.5 1-1.1 2.2-1.9 3.4-.5.7-1.7 2.2-2.4 3-.7-.8-1.9-2.3-2.4-3-.8-1.2-1.4-2.3-1.9-3.3-.6-1.4-.7-2.2-.7-2.5 0-2.6 2.2-4.7 5-4.7s5 2.1 5 4.7c0 .2-.1 1-.7 2.4zM12.5 9c-.8 0-1.5.7-1.5 1.5s.7 1.5 1.5 1.5 1.5-.7 1.5-1.5S13.3 9 12.5 9z" />
+					</SVG>
 				</div>
 				<div class="block-toolbar__button block-handle">
 					<svg
@@ -162,7 +229,7 @@
 
 				<div class="block-toolbar__divider">|</div>
 
-				<div class="block-toolbar__button">
+				<div class="block-toolbar__button add-submenu for-link">
 					<svg
 						height="24px"
 						width="24px"
@@ -173,7 +240,58 @@
 					</svg>
 				</div>
 
-				<div class="block-toolbar__divider">|</div>
+				<div class="block-toolbar__divider for-link">|</div>
+
+				<div class="block-toolbar__button for-link for-paragraph">
+					<SVG
+						height="24px"
+						width="24px"
+						class="icon icon-bold"
+						xmlns="http://www.w3.org/2000/svg"
+						viewBox="0 0 24 24">
+						<Path d="M14.7 11.3c1-.6 1.5-1.6 1.5-3 0-2.3-1.3-3.4-4-3.4H7v14h5.8c1.4 0 2.5-.3 3.3-1 .8-.7 1.2-1.7 1.2-2.9.1-1.9-.8-3.1-2.6-3.7zm-5.1-4h2.3c.6 0 1.1.1 1.4.4.3.3.5.7.5 1.2s-.2 1-.5 1.2c-.3.3-.8.4-1.4.4H9.6V7.3zm4.6 9c-.4.3-1 .4-1.7.4H9.6v-3.9h2.9c.7 0 1.3.2 1.7.5.4.3.6.8.6 1.5s-.2 1.2-.6 1.5z" />
+					</SVG>
+				</div>
+
+				<div class="block-toolbar__button for-link for-paragraph">
+					<SVG
+						height="24px"
+						width="24px"
+						class="icon icon-italic"
+						xmlns="http://www.w3.org/2000/svg"
+						viewBox="0 0 24 24">
+						<Path d="M12.5 5L10 19h1.9l2.5-14z" />
+					</SVG>
+				</div>
+
+				<div class="block-toolbar__button for-paragraph">
+					<SVG
+						height="24px"
+						width="24px"
+						class="icon-link icon"
+						xmlns="http://www.w3.org/2000/svg"
+						viewBox="0 0 24 24">
+						<Path d="M15.6 7.2H14v1.5h1.6c2 0 3.7 1.7 3.7 3.7s-1.7 3.7-3.7 3.7H14v1.5h1.6c2.8 0 5.2-2.3 5.2-5.2 0-2.9-2.3-5.2-5.2-5.2zM4.7 12.4c0-2 1.7-3.7 3.7-3.7H10V7.2H8.4c-2.9 0-5.2 2.3-5.2 5.2 0 2.9 2.3 5.2 5.2 5.2H10v-1.5H8.4c-2 0-3.7-1.7-3.7-3.7zm4.6.9h5.3v-1.5H9.3v1.5z" />
+					</SVG>
+				</div>
+
+				<div class="block-toolbar__divider for-link for-paragraph">|</div>
+
+				<div class="block-toolbar__button for-social">
+					<span>Size</span>
+				</div>
+
+				<div class="block-toolbar__divider for-social">|</div>
+
+				<div class="block-toolbar__button for-search">
+					<span>Title</span>
+				</div>
+
+				<div class="block-toolbar__button for-search">
+					<span>Button</span>
+				</div>
+
+				<div class="block-toolbar__divider for-search">|</div>
 
 				<div class="block-toolbar__button block-more-menu">
 					<svg
@@ -202,6 +320,14 @@
 				<span class="details__label">Label</span>
 				<small class="details__url">URL</small>
 				<button class="details__edit">Edit</button>
+				<div class="details__children-settings">
+					Show children when
+					<select onclick="event.stopPropagation();">
+						<option selected>Toggled</option>
+						<option>Hover</option>
+						<option>Click</option>
+					</select>
+				</div>
 			</div>
 
 			<ul id="component__more-menu" class="more-menu">
@@ -215,7 +341,19 @@
 			</ul>
 		</div>
 
+		<div class="prototype-controls">
+			<button onclick="$( '.menu-list-view' ).toggleClass( 'horizontal' );">Horizontal/Vertical</button>
+		</div>
+
 		<div class="menu-list-view">
+			<div
+				class="menu-item block-type__search"
+				data-type="search"
+				data-has-children="false">
+				<label contenteditable="true">Search</label>
+				<input type="search" placeholder="Search this site..." />
+				<button type="button" name="button">Go</button>
+			</div>
 			<div
 				class="menu-item block-type__link"
 				data-type="link"
@@ -355,47 +493,60 @@
 				data-detail-url="/about/contact/">
 				<label contenteditable="true">Contact</label>
 			</div>
+
 			<div
 				class="menu-item block-type__paragraph"
 				data-type="paragraph"
 				data-name="paragraph"
 				data-has-children="false">
-				<label contenteditable="true">Call anytime at 1-800-902-1000</label>
+				<label contenteditable="true">Call <em>anytime</em> at <a href="call:">1-800-902-1000</a></label>
 			</div>
+
 			<div
-				class="menu-item block-type__social-icons has-children"
+				class="menu-item block-type__social-icons"
 				data-type="social-icons"
 				data-name="social-icons"
-				data-has-children="true">
-				<label>Social Icons</label>
+				data-has-children="false">
+				<div class="social-icon social__twitter" style="background-color: #1da1f2;">
+					<svg
+						height="32px"
+						width="32px"
+						xmlns="http://www.w3.org/2000/svg"
+						viewBox="0 0 400 400">
+							<path fill="#fff" d="M153.62,301.59c94.34,0,145.94-78.16,145.94-145.94,0-2.22,0-4.43-.15-6.63A104.36,104.36,0,0,0,325,122.47a102.38,102.38,0,0,1-29.46,8.07,51.47,51.47,0,0,0,22.55-28.37,102.79,102.79,0,0,1-32.57,12.45,51.34,51.34,0,0,0-87.41,46.78A145.62,145.62,0,0,1,92.4,107.81a51.33,51.33,0,0,0,15.88,68.47A50.91,50.91,0,0,1,85,169.86c0,.21,0,.43,0,.65a51.31,51.31,0,0,0,41.15,50.28,51.21,51.21,0,0,1-23.16.88,51.35,51.35,0,0,0,47.92,35.62,102.92,102.92,0,0,1-63.7,22A104.41,104.41,0,0,1,75,278.55a145.21,145.21,0,0,0,78.62,23"/>
+					</svg>
+				</div>
+				<div class="social-icon social__facebook" style="background-color: blue;">
+					<svg
+						height="24px"
+						width="24px"
+						xmlns="http://www.w3.org/2000/svg"
+						viewBox="0 0 310 310">
+						<path fill="#fff" d="M81.703,165.106h33.981V305c0,2.762,2.238,5,5,5h57.616c2.762,0,5-2.238,5-5V165.765h39.064
+							c2.54,0,4.677-1.906,4.967-4.429l5.933-51.502c0.163-1.417-0.286-2.836-1.234-3.899c-0.949-1.064-2.307-1.673-3.732-1.673h-44.996
+							V71.978c0-9.732,5.24-14.667,15.576-14.667c1.473,0,29.42,0,29.42,0c2.762,0,5-2.239,5-5V5.037c0-2.762-2.238-5-5-5h-40.545
+							C187.467,0.023,186.832,0,185.896,0c-7.035,0-31.488,1.381-50.804,19.151c-21.402,19.692-18.427,43.27-17.716,47.358v37.752H81.703
+							c-2.762,0-5,2.238-5,5v50.844C76.703,162.867,78.941,165.106,81.703,165.106z"/>
+					</svg>
+				</div>
+				<div class="inline-inserter">
+					<svg
+						height="24px"
+						width="24px"
+						class="icon icon-plus-small"
+						xmlns="http://www.w3.org/2000/svg"
+						viewBox="0 0 24 24">
+						<path d="M8 12h8M12 8v8" stroke="#1E1E1E" stroke-width="1.5"/>
+					</svg>
+				</div>
 			</div>
-			<div class="menu-children" data-parent="social-icons">
-				<div
-					class="menu-item"
-					data-type="social-icon"
-					data-has-children="false">
-					<label contenteditable="true">Facebook</label>
-				</div>
-				<div
-					class="menu-item"
-					data-type="social-icon"
-					data-has-children="false">
-					<label contenteditable="true">Twitter</label>
-				</div>
-				<div
-					class="menu-item"
-					data-type="social-icon"
-					data-has-children="false">
-					<label contenteditable="true">Instagram</label>
-				</div>
-			</div>
-
 
 			<div
-				class="menu-item block-type__search"
-				data-type="search"
+				class="menu-item block-type__image"
+				data-type="image"
+				data-name="image"
 				data-has-children="false">
-				<label contenteditable="true">Search</label>
+				<img src="./painting.jpg" height="120px" />
 			</div>
 		</div>
 	</body>
