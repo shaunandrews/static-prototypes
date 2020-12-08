@@ -1,0 +1,81 @@
+This adds an .is-hovered class to all blocks when they're hovered.
+It also tries to do something with the inbetween inserter...
+
+// Hovering a block adds the 'is-hovered' class
+$( '.block' ).hover( function( event ) {
+  event.stopPropagation();
+  $( this ).addClass( 'is-hovered' ).parents().removeClass('is-hovered');
+  $( this ).next( 'inbetween-inserter' ).addClass( 'is-hovered' );
+}, function( event ) {
+  event.stopPropagation();
+  $( this ).removeClass( 'is-hovered' ).parents().addClass('is-hovered');
+  $( this ).next( 'inbetween-inserter' ).removeClass( 'is-hovered' );
+} );
+
+
+var timer;
+
+$( '.inbetween-inserter' ).hover( function() {
+  var guide = $( this );
+  timer = setTimeout( function() {
+    guide.addClass( 'is-hovered' );
+  }, 300 );
+}, function() {
+  $( this ).removeClass( 'is-hovered' );
+  clearTimeout( timer );
+} );
+
+// Each block gets a before and after inserter.
+block.each( function() {
+  $( '<div class="inbetween-inserter before"></div>' ).prependTo( block );
+  $( '<div class="inbetween-inserter after"></div>' ).appendTo( block );
+} );
+
+$( '.inbetween-inserter' ).click( function( event ) {
+  event.preventDefault();
+} );
+
+
+$( '.inbetween-inserter' ).hover( function() {
+  var hoverArea = $( this ),
+      block = hoverArea.parent();
+  console.log( 'mouseover' );
+
+  timer = setTimeout( function() {
+    if ( hoverArea.hasClass( 'before' ) ) {
+      $( '<div class="inserter-guide before"></div>' ).insertBefore( block );
+    } else {
+      $( '<div class="inserter-guide after"></div>' ).insertAfter( block );
+    }
+  }, 600 );
+
+}, function() {
+  console.log( 'mouseout' );
+  clearTimeout( timer );
+  $( '.inserter-guide' ).remove();
+
+} );
+
+
+
+
+
+function toggleOrientation() {
+  var block = $( '.block__navigation' ),
+      orientation = block.data( 'orientation' );
+
+  console.log( orientation );
+
+  if ( orientation == 'horizontal' ) {
+    // If its currently set to horizontal, lets toggle
+    // everything to vertical
+    block.removeClass( 'horizontal' );
+    block.data( 'variant', '' );
+  } else {
+    // Otherwise, its vertical, so lets toggle everything.
+    block.addClass( 'horizontal' );
+    block.data( 'orientation', 'horizontal' );
+    //$( '.canvas .block__navigation .orientation-horizontal' ).addClass( 'is-selected' );
+    //$( '.canvas .block__navigation .orientation-vertical' ).removeClass( 'is-selected' );
+  }
+}
